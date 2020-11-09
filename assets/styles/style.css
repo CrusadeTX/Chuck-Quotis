@@ -1,0 +1,15 @@
+.result-container {
+    border: 6px dotted white;
+    border-radius: 60px 60px 60px 60px;
+}
+
+.card-quote {
+    width: 18rem; 
+    min-height: 18rem;
+}
+
+.thumbnail{
+    max-width: 8rem;
+    max-height: 8rem;
+    margin: 1rem;
+}
