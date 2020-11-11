@@ -81,7 +81,7 @@ function convertToCard(){
 
 }
 function generateImage(img){
-    var random = getRandomInt(4);
+    var random = getRandomInt(7);
     var imgPath = "assets/images/"+random.toString()+".jpg";
     img.attr("src",imgPath);
     img.show();
