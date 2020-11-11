@@ -1,9 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" /
 $(document).ready(function(){
-    var apiResponse ="";
-    var requestComplete= false;
-    var templateList =[];
-
+    //var templateList =[];
+$("#random-quote-container").hide();
+$("#personalised-quote-container").hide();
 
     function doApiRequest(type){       
         $.ajax({
@@ -12,9 +11,14 @@ $(document).ready(function(){
            url: QueryBuilder(type),
            dataType: "json"
         }).done(function(response){
-           console.log(response);
-           console.log(templateList);
-            getAllQuotes(response);
+            debugger;
+            console.log(response);
+            debugger;
+            switch(type){
+                case "random": getRandomQuote(response); break;
+                case "":  getAllQuotes(response); break;
+                case "personalised": getPersonalisedQuote(response); break;
+            }
         }).fail(function(){
             console.log("Something went wrong")
         })
@@ -54,14 +58,6 @@ $(document).ready(function(){
             }
         }*/
 }
-
-
-function getApiResponse(response){
-return response;
-}
-
-
-
 function getAllQuotes(data){
     clearAllQuotes()
     for (i=0;i<data.value.length;i++){
@@ -72,20 +68,29 @@ function getAllQuotes(data){
     generateImage(img);
     $('#quote-container').append(template);
     template.show();
-    templateList.push(template);
+    //templateList.push(template);
     }
 }
 
 function clearAllQuotes(){
  $("#quote-container").empty();
+ debugger
 
 }
 function getPersonalisedQuote(data){
+    $("#result-personalised-quote").text(data.value.joke)
+    debugger;
+    $("#personalised-quote-container").show();
+    debugger;
+
 
 }
 
 function getRandomQuote(data){
-
+    $("#result-random-quote").text(data.value.joke)
+    debugger
+    $("#random-quote-container").show();
+    debugger
 }
 
 function convertToList(){
@@ -108,16 +113,22 @@ function getRandomInt(max) {
 $('input[name="limit"]').click(function(){
   doApiRequest("")
 })
+$("#submit-random-quote").click(function(){
+    doApiRequest("random")
+})
+$("#submit-personalised-quote").click(function(){
+    doApiRequest("personalised")
+})
 
 function QueryBuilder(type){
-    var fname;
-    var lname;
-    var limit;
-    var creds;
-    var apiLimit;
-    var apiType;
+    var fname="";
+    var lname="";
+    var limit="";
+    var creds="";
+    var apiLimit="";
+    var apiType="";
 
-    if(type === "random"){
+    if(type === "random" || type ==="personalised"){
     apiType ="random";
     fname = $("#first-name").val();
     lname = $("#last-name").val();
@@ -130,11 +141,21 @@ function QueryBuilder(type){
     creds="";;
     }
    var limit = $('input[name="limit"]:checked').val();
+   if(limit === undefined){
+       limit="all";
+   }
     switch(limit){
-        case "nerdy": apiLimit ="?limitTo=[nerdy]"; break;
-        case "explicit": apiLimit ="?limitTo=[explicit]"; break;
+        case "nerdy": apiLimit ="?limitTo=[nerdy]";
+        if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
+            creds = "&firstName=" + fname + "&lastName=" + lname};
+         break;
+        case "explicit": apiLimit ="?limitTo=[explicit]";
+        if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
+            creds = "&firstName=" + fname + "&lastName=" + lname}; 
+        break;
         case "all": apiLimit ="";
-        if(fname !=="" && lname !==""&& type==="random"){
+        if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
+            console.log("i am here man")
             creds = "?firstName=" + fname + "&lastName=" + lname;
         }; break;
         default: apiLimit =""; break;
