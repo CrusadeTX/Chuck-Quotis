@@ -91,6 +91,7 @@ function getRandomQuote(data){
     $("#last-name").val("");
     $("#result-random-quote").text(data.value.joke)
     $("#random-quote-container").show();
+    $("#submit-personalised-quote").attr("disabled", true)
 }
 
 function convertToList(){
