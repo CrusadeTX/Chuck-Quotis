@@ -1,13 +1,13 @@
 /// <reference path="../typings/tsd.d.ts" /
+var hasLName = false;
+var hasFName = false;
 $(document).ready(function(){
-    //var templateList =[];
 $("#random-quote-container").hide();
 $("#personalised-quote-container").hide();
 
     function doApiRequest(type){       
         $.ajax({
-            method: "GET",
-           // url: "https://api.icndb.com/jokes/" + apiType + apiLimit + apiName,
+           method: "GET",
            url: QueryBuilder(type),
            dataType: "json"
         }).done(function(response){
@@ -16,7 +16,7 @@ $("#personalised-quote-container").hide();
             debugger;
             switch(type){
                 case "random": getRandomQuote(response); break;
-                case "":  getAllQuotes(response); break;
+                case "": getAllQuotes(response); break;
                 case "personalised": getPersonalisedQuote(response); break;
             }
         }).fail(function(){
@@ -68,7 +68,6 @@ function getAllQuotes(data){
     generateImage(img);
     $('#quote-container').append(template);
     template.show();
-    //templateList.push(template);
     }
 }
 
@@ -79,18 +78,19 @@ function clearAllQuotes(){
 }
 function getPersonalisedQuote(data){
     $("#result-personalised-quote").text(data.value.joke)
-    debugger;
     $("#personalised-quote-container").show();
-    debugger;
+    $("#first-name").val("");
+    $("#last-name").val("");
+    $("#submit-personalised-quote").attr("disabled", true)
 
 
 }
 
 function getRandomQuote(data){
+    $("#first-name").val("");
+    $("#last-name").val("");
     $("#result-random-quote").text(data.value.joke)
-    debugger
     $("#random-quote-container").show();
-    debugger
 }
 
 function convertToList(){
@@ -119,7 +119,29 @@ $("#submit-random-quote").click(function(){
 $("#submit-personalised-quote").click(function(){
     doApiRequest("personalised")
 })
-
+$("#first-name").on("keydown", function(){
+    console.log(1);
+    if($("#first-name").val().length>0){
+        hasFName = true;
+    }
+    if(hasFName && hasLName){
+        $("#submit-personalised-quote").removeAttr("disabled")
+    }
+    else{
+        $("#submit-personalised-quote").attr("disabled", true)
+    }
+})
+$("#last-name").on("keydown", function(){
+    if($("#last-name").val().length>0){
+        hasLName = true;
+    }
+    if(hasFName && hasLName){
+        $("#submit-personalised-quote").removeAttr("disabled")
+    }
+    else{
+        $("#submit-personalised-quote").attr("disabled", true)
+    }
+})
 function QueryBuilder(type){
     var fname="";
     var lname="";
@@ -159,6 +181,9 @@ function QueryBuilder(type){
             creds = "?firstName=" + fname + "&lastName=" + lname;
         }; break;
         default: apiLimit =""; break;
+    }
+    if(type === "random"){
+        creds ="";
     }
 
     var query = "https://api.icndb.com/jokes/"+apiType+apiLimit+creds;
