@@ -27,7 +27,7 @@ function getAllQuotes(data){
     for (i=0;i<data.value.length;i++){
     var template = $('#card-template').clone();
     template.attr('id', '');
-    template.find('span').text(data.value[i].joke)
+    template.find('span').text(decodeEntities(data.value[i].joke))
     var img =template.find('img');
     generateImage(img);
     $('#quote-container').append(template);
@@ -39,7 +39,7 @@ function clearAllQuotes(){
  $("#quote-container").empty();
 }
 function getPersonalisedQuote(data){
-    $("#result-personalised-quote").text(data.value.joke)
+    $("#result-personalised-quote").text(decodeEntities(data.value.joke))
     $("#personalised-quote-container").show();
     $("#first-name").val("");
     $("#last-name").val("");
@@ -48,13 +48,19 @@ function getPersonalisedQuote(data){
 
 }
 
+
 function getRandomQuote(data){
     $("#first-name").val("");
     $("#last-name").val("");
-    $("#result-random-quote").text(data.value.joke)
+    $("#result-random-quote").text(decodeEntities(data.value.joke))
     $("#random-quote-container").show();
     $("#submit-personalised-quote").attr("disabled", true)
 }
+function decodeEntities(encodedString) {
+    var textArea = document.createElement('textarea');
+    textArea.innerHTML = encodedString;
+    return textArea.value;
+  }
 
 function changeView(){
     //var quote = $("#card-template");
