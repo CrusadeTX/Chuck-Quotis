@@ -93,6 +93,17 @@ function getRandomQuote(data){
 function changeView(){
     var quotes = $("#quote-container>div");
     if(quotes.length>0){
+       var quote = $("#card-template");
+       var img = $("#card-template>img");
+       quote.removeClass("card");
+       quote.removeClass("m-2");
+       quote.removeClass("shadow");
+       quote.removeClass("card-quote");
+       quote.addClass("d-flex");
+       quote.addClass("border-top");
+       quote.addClass("w-100");
+       img.addClass("thumbnail");
+       img.removeClass("img-full-size");
         var images = $("#quote-container").find("img");
         debugger;
         if(quotes.hasClass("card")){
