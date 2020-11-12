@@ -9,8 +9,9 @@
 }
 
 .thumbnail{
-    max-width: 8rem;
-    max-height: 8rem;
+    
+    max-width: 6rem;
+    max-height: 6rem;
     margin: 1rem;
 }
 .img-full-size{

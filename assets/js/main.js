@@ -11,9 +11,7 @@ $("#personalised-quote-container").hide();
            url: QueryBuilder(type),
            dataType: "json"
         }).done(function(response){
-            debugger;
-            console.log(response);
-            debugger;
+            //console.log(response);
             switch(type){
                 case "random": getRandomQuote(response); break;
                 case "": getAllQuotes(response); break;
@@ -63,7 +61,7 @@ function getAllQuotes(data){
     for (i=0;i<data.value.length;i++){
     var template = $('#card-template').clone();
     template.attr('id', '');
-    console.log(template.find('span').text(data.value[i].joke))
+    template.find('span').text(data.value[i].joke)
     var img =template.find('img');
     generateImage(img);
     $('#quote-container').append(template);
@@ -73,8 +71,6 @@ function getAllQuotes(data){
 
 function clearAllQuotes(){
  $("#quote-container").empty();
- debugger
-
 }
 function getPersonalisedQuote(data){
     $("#result-personalised-quote").text(data.value.joke)
@@ -94,8 +90,81 @@ function getRandomQuote(data){
     $("#submit-personalised-quote").attr("disabled", true)
 }
 
-function convertToList(){
+function changeView(){
+    var quotes = $("#quote-container>div");
+    if(quotes.length>0){
+        var images = $("#quote-container").find("img");
+        debugger;
+        if(quotes.hasClass("card")){
+        quotes.removeClass("card");
+        quotes.removeClass("m-2");
+        quotes.removeClass("shadow");
+        quotes.removeClass("card-quote");
+        quotes.addClass("d-flex");
+        quotes.addClass("border-top");
+        quotes.addClass("w-100");
+        images.addClass("thumbnail");
+        images.removeClass("img-full-size");
+        }
+        else{
+        quotes.addClass("card");
+        quotes.addClass("m-2");
+        quotes.addClass("shadow");
+        quotes.addClass("card-quote");
+        quotes.removeClass("d-flex");
+        quotes.removeClass("border-top");
+        quotes.removeClass("w-100");
+        images.removeClass("thumbnail");
+        images.addClass("img-full-size");
+        }
+       debugger;
 
+        /*for(i=0;i<quotes.length;i++){
+            if(quotes[i].classList.contains("card")){
+            quotes[i].classList.remove("card");
+            quotes[i].classList.remove("m-2");
+            quotes[i].classList.remove("shadow");
+            quotes[i].classList.remove("card-quote");
+            quotes[i].classList.add("d-flex");
+            quotes[i].classList.add("border-top");
+            debugger;
+            }
+            else{
+            quotes[i].classList.add("card");
+            quotes[i].classList.add("m-2");
+            quotes[i].classList.add("shadow");
+            quotes[i].classList.add("card-quote");
+            quotes[i].classList.remove("d-flex");
+            quotes[i].classList.remove("border-top");
+            }
+            
+        }
+        for(i=0;i<images.length;i++){
+            if(images[i].classList.contains("thumbnail")){
+                images[i].classList.remove("thumbnail");
+            }
+            else
+            {
+                images[i].classList.add("thumbnail"); 
+            }
+        } */
+    }
+    
+    else{
+       var quote = $("#card-template");
+       var img = $("#card-template>img");
+       quote.removeClass("card");
+       quote.removeClass("m-2");
+       quote.removeClass("shadow");
+       quote.removeClass("card-quote");
+       quote.addClass("d-flex");
+       quote.addClass("border-top");
+       quote.addClass("w-100");
+       img.addClass("thumbnail");
+       img.removeClass("img-full-size");
+       debugger;
+    }
+    debugger;
 }
 function convertToCard(){
 
@@ -183,8 +252,9 @@ $("#last-name").on("keyup", function(){
         $("#submit-personalised-quote").attr("disabled", true)
     }
 
-
-
+})
+$("#change-view").click(function(){
+    changeView();
 })
 function QueryBuilder(type){
     var fname="";
@@ -221,7 +291,6 @@ function QueryBuilder(type){
         break;
         case "all": apiLimit ="";
         if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
-            console.log("i am here man")
             creds = "?firstName=" + fname + "&lastName=" + lname;
         }; break;
         default: apiLimit =""; break;
@@ -238,4 +307,6 @@ function QueryBuilder(type){
 
 
 }
+
+
 })
