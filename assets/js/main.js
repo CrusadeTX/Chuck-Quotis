@@ -119,11 +119,16 @@ $("#submit-random-quote").click(function(){
 })
 $("#submit-personalised-quote").click(function(){
     doApiRequest("personalised")
+    hasFName=false;
+    hasLName=false;
 })
 $("#first-name").on("keydown", function(){
     console.log(1);
     if($("#first-name").val().length>0){
         hasFName = true;
+    }
+    else{
+        hasFName = false;
     }
     if(hasFName && hasLName){
         $("#submit-personalised-quote").removeAttr("disabled")
@@ -136,12 +141,50 @@ $("#last-name").on("keydown", function(){
     if($("#last-name").val().length>0){
         hasLName = true;
     }
+    else{
+        hasLName =false;
+    }
     if(hasFName && hasLName){
         $("#submit-personalised-quote").removeAttr("disabled")
     }
     else{
         $("#submit-personalised-quote").attr("disabled", true)
     }
+
+
+
+})
+$("#first-name").on("keyup", function(){
+    console.log(1);
+    if($("#first-name").val().length>0){
+        hasFName = true;
+    }
+    else{
+        hasFName = false;
+    }
+    if(hasFName && hasLName){
+        $("#submit-personalised-quote").removeAttr("disabled")
+    }
+    else{
+        $("#submit-personalised-quote").attr("disabled", true)
+    }
+})
+$("#last-name").on("keyup", function(){
+    if($("#last-name").val().length>0){
+        hasLName = true;
+    }
+    else{
+        hasLName =false;
+    }
+    if(hasFName && hasLName){
+        $("#submit-personalised-quote").removeAttr("disabled")
+    }
+    else{
+        $("#submit-personalised-quote").attr("disabled", true)
+    }
+
+
+
 })
 function QueryBuilder(type){
     var fname="";
