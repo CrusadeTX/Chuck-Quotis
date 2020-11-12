@@ -18,3 +18,6 @@
     max-width: 14rem;
     height: 14rem;
 }
+.hide-quote{
+    display: none;
+}

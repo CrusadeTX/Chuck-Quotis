@@ -20,44 +20,10 @@ $("#personalised-quote-container").hide();
         }).fail(function(){
             console.log("Something went wrong")
         })
-       /* var limit = $('input[name="limit"]:checked').val();
-        var apiType="";
-        var apiName ="";
-        var apiLimit="";
-        switch(type){
-            case "random" : apiType = "random"; break;
-            case "multiple": apiType = "";break;
-            default : apiType="random";break;
-        }
-        if (type === "random"){
-            if(limit !== null && limit!==""){
-                switch(limit){
-                    case "nerdy": apiLimit ="?limitTo=[nerdy]"; break;
-                    case "explicit": apiLimit ="?limitTo=[explicit]"; break;
-                    case "all": apiLimit =""; break;
-                    default: apiLimit =""; break;
-                }
-            }
-            else{
-                apiLimit="";
-            }
-        }
-        else{
-            if (fname !== null && lname !== null){
-                if(limit ==="all"){
-                    apiName = "?firstName=" + fname + "&lastName=" + lname;    
-                }
-                else{
-                    apiName = "firstName=" + fname + "&lastName=" + lname;   
-                }
-            }
-            else{
-                apiName="";
-            }
-        }*/
 }
 function getAllQuotes(data){
     clearAllQuotes()
+    showChangeViewButton();
     for (i=0;i<data.value.length;i++){
     var template = $('#card-template').clone();
     template.attr('id', '');
@@ -91,79 +57,62 @@ function getRandomQuote(data){
 }
 
 function changeView(){
+    //var quote = $("#card-template");
+    //quote.hide();
     var quotes = $("#quote-container>div");
+    //var img = $("#card-template>img");
+    var images;
     if(quotes.length>0){
-       var quote = $("#card-template");
-       var img = $("#card-template>img");
-       quote.removeClass("card");
-       quote.removeClass("m-2");
-       quote.removeClass("shadow");
-       quote.removeClass("card-quote");
-       quote.addClass("d-flex");
-       quote.addClass("border-top");
-       quote.addClass("w-100");
-       img.addClass("thumbnail");
-       img.removeClass("img-full-size");
-        var images = $("#quote-container").find("img");
-        debugger;
+        
+        images = $("#quote-container").find("img");
         if(quotes.hasClass("card")){
-        quotes.removeClass("card");
-        quotes.removeClass("m-2");
-        quotes.removeClass("shadow");
-        quotes.removeClass("card-quote");
-        quotes.addClass("d-flex");
-        quotes.addClass("border-top");
-        quotes.addClass("w-100");
-        images.addClass("thumbnail");
-        images.removeClass("img-full-size");
-        }
-        else{
-        quotes.addClass("card");
-        quotes.addClass("m-2");
-        quotes.addClass("shadow");
-        quotes.addClass("card-quote");
-        quotes.removeClass("d-flex");
-        quotes.removeClass("border-top");
-        quotes.removeClass("w-100");
-        images.removeClass("thumbnail");
-        images.addClass("img-full-size");
-        }
-       debugger;
-
-        /*for(i=0;i<quotes.length;i++){
-            if(quotes[i].classList.contains("card")){
-            quotes[i].classList.remove("card");
-            quotes[i].classList.remove("m-2");
-            quotes[i].classList.remove("shadow");
-            quotes[i].classList.remove("card-quote");
-            quotes[i].classList.add("d-flex");
-            quotes[i].classList.add("border-top");
-            debugger;
-            }
-            else{
-            quotes[i].classList.add("card");
-            quotes[i].classList.add("m-2");
-            quotes[i].classList.add("shadow");
-            quotes[i].classList.add("card-quote");
-            quotes[i].classList.remove("d-flex");
-            quotes[i].classList.remove("border-top");
-            }
+            quotes.removeClass("card");
+            quotes.removeClass("m-2");
+            quotes.removeClass("shadow");
+            quotes.removeClass("card-quote");
+            quotes.addClass("d-flex");
+            quotes.addClass("border-top");
+            quotes.addClass("w-100");
+            images.addClass("thumbnail");
+            images.removeClass("img-full-size");
+            //quote.removeClass("card");
+            //quote.removeClass("m-2");
+            //quote.removeClass("shadow");
+            //quote.removeClass("card-quote");
+            //quote.addClass("d-flex");
+            //quote.addClass("border-top");
+            //quote.addClass("w-100");
+            //img.addClass("thumbnail");
+            //img.removeClass("img-full-size");
+            //quote.removeClass("hide-quote")
             
         }
-        for(i=0;i<images.length;i++){
-            if(images[i].classList.contains("thumbnail")){
-                images[i].classList.remove("thumbnail");
-            }
-            else
-            {
-                images[i].classList.add("thumbnail"); 
-            }
-        } */
+        else{
+            quotes.addClass("card");
+            quotes.addClass("m-2");
+            quotes.addClass("shadow");
+            quotes.addClass("card-quote");
+            quotes.removeClass("d-flex");
+            quotes.removeClass("border-top");
+            quotes.removeClass("w-100");
+            images.removeClass("thumbnail");
+            images.addClass("img-full-size");
+            //quote.addClass("card");
+            //quote.addClass("m-2");
+            //quote.addClass("shadow");
+            //quote.addClass("card-quote");
+            //quote.removeClass("d-flex");
+            //quote.removeClass("border-top");
+            //quote.removeClass("w-100");
+            //img.removeClass("thumbnail");
+            //img.addClass("img-full-size");
+            //quote.addClass("hide-quote")
+            
+            debugger;
+        }
     }
     
-    else{
-       var quote = $("#card-template");
-       var img = $("#card-template>img");
+    /*else{
        quote.removeClass("card");
        quote.removeClass("m-2");
        quote.removeClass("shadow");
@@ -173,11 +122,11 @@ function changeView(){
        quote.addClass("w-100");
        img.addClass("thumbnail");
        img.removeClass("img-full-size");
-       debugger;
-    }
-    debugger;
+       //quote.removeClass("hide-quote")
+    }*/
 }
-function convertToCard(){
+function showChangeViewButton(){
+    $("#change-view-btn").show();
 
 }
 function generateImage(img){
@@ -264,7 +213,7 @@ $("#last-name").on("keyup", function(){
     }
 
 })
-$("#change-view").click(function(){
+$("#change-view-btn").click(function(){
     changeView();
 })
 function QueryBuilder(type){
@@ -311,7 +260,6 @@ function QueryBuilder(type){
     }
 
     var query = "https://api.icndb.com/jokes/"+apiType+apiLimit+creds;
-    debugger;
     return query;
 
 
