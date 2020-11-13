@@ -113,8 +113,6 @@ function changeView(){
             //img.removeClass("thumbnail");
             //img.addClass("img-full-size");
             //quote.addClass("hide-quote")
-            
-            debugger;
         }
     }
     
