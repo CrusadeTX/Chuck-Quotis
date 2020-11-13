@@ -11,7 +11,6 @@ $("#personalised-quote-container").hide();
            url: QueryBuilder(type),
            dataType: "json"
         }).done(function(response){
-            //console.log(response);
             switch(type){
                 case "random": getRandomQuote(response); break;
                 case "": getAllQuotes(response); break;
@@ -63,10 +62,7 @@ function decodeEntities(encodedString) {
   }
 
 function changeView(){
-    //var quote = $("#card-template");
-    //quote.hide();
     var quotes = $("#quote-container>div");
-    //var img = $("#card-template>img");
     var images;
     if(quotes.length>0){
         
@@ -81,17 +77,6 @@ function changeView(){
             quotes.addClass("w-100");
             images.addClass("thumbnail");
             images.removeClass("img-full-size");
-            //quote.removeClass("card");
-            //quote.removeClass("m-2");
-            //quote.removeClass("shadow");
-            //quote.removeClass("card-quote");
-            //quote.addClass("d-flex");
-            //quote.addClass("border-top");
-            //quote.addClass("w-100");
-            //img.addClass("thumbnail");
-            //img.removeClass("img-full-size");
-            //quote.removeClass("hide-quote")
-            
         }
         else{
             quotes.addClass("card");
@@ -103,31 +88,8 @@ function changeView(){
             quotes.removeClass("w-100");
             images.removeClass("thumbnail");
             images.addClass("img-full-size");
-            //quote.addClass("card");
-            //quote.addClass("m-2");
-            //quote.addClass("shadow");
-            //quote.addClass("card-quote");
-            //quote.removeClass("d-flex");
-            //quote.removeClass("border-top");
-            //quote.removeClass("w-100");
-            //img.removeClass("thumbnail");
-            //img.addClass("img-full-size");
-            //quote.addClass("hide-quote")
         }
     }
-    
-    /*else{
-       quote.removeClass("card");
-       quote.removeClass("m-2");
-       quote.removeClass("shadow");
-       quote.removeClass("card-quote");
-       quote.addClass("d-flex");
-       quote.addClass("border-top");
-       quote.addClass("w-100");
-       img.addClass("thumbnail");
-       img.removeClass("img-full-size");
-       //quote.removeClass("hide-quote")
-    }*/
 }
 function showChangeViewButton(){
     $("#change-view-btn").show();
