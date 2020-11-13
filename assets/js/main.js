@@ -118,7 +118,6 @@ $("#submit-personalised-quote").click(function(){
     hasLName=false;
 })
 $("#first-name").on("keydown", function(){
-    console.log(1);
     if($("#first-name").val().length>0){
         hasFName = true;
     }
@@ -150,7 +149,6 @@ $("#last-name").on("keydown", function(){
 
 })
 $("#first-name").on("keyup", function(){
-    console.log(1);
     if($("#first-name").val().length>0){
         hasFName = true;
     }
