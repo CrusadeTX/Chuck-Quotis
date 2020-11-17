@@ -230,6 +230,4 @@ function QueryBuilder(type){
 
 
 }
-
-
 })
