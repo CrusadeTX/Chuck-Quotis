@@ -23,7 +23,7 @@
             <div class="d-flex align-items-center col-lg-2 col-12">
                 <button id="change-view-btn" class="btn btn-danger text-center btn-block lg-btn my-2 my-lg-0" style="display: none;">Change View</button>
             </div>
-            <div class="d-flex align-items-center col-lg-8 col-12 justify-content-center">
+            <div class="d-flex align-items-center col-lg-4 col-12 justify-content-center">
             <div class="d-flex align-items-center">
                 <span class="text-danger h4">Category: </span>
             </div>
@@ -41,6 +41,27 @@
                     <label class="custom-control-label text-danger h6" for="customRadio3">All</label>
                   </div>
             </form>
+            
+        </div>
+        <div class="d-flex align-items-center col-lg-4 col-12 justify-content-center">
+            <div class="d-flex align-items-center">
+                <span class="text-danger h4">Filter: </span>
+            </div>
+            <form class="d-flex align-items-center">
+                <div class="custom-control custom-radio mx-2">
+                    <input type="radio" id="customRadio4" name="filter" value="saved" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio1">Nerdy</label>
+                  </div>
+                  <div class="custom-control custom-radio mx-2">
+                    <input type="radio" id="customRadio5" name="filter" value="shared"class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio2">Explicit</label>
+                  </div>
+                  <div class="custom-control custom-radio mx-2">
+                    <input type="radio" id="customRadio6" name="filter" value="both" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio3">All</label>
+                  </div>
+            </form>
+            
         </div>
         </div>
             <div class="row mt-3 d-flex mx-0 mx-lg-0">
@@ -152,8 +173,12 @@
             <img class="card-img-top img-full-size" src="" alt="Card image cap">
             <div class="card-body">
             <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
-            </div>
           </div>
+            <div class="text-center">
+            <button class="btn btn-success mb-3 mx-2" type="button">Save</button>
+            <button class="btn btn-primary   mb-3 mx-2" type="button">Share</button>
+            </div>
+        </div>
 
 
 
