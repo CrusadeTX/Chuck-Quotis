@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="quotes")
+@Table(name="quote")
 public class QuoteBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,11 @@ public class QuoteBean {
 	private String iconPath;
 	@Column(name="text", nullable=false, length=256)
 	private String text;
-	@OneToMany(mappedBy="quotes", fetch = FetchType.EAGER)
+	@Column(name="saved", nullable=false)
+	private boolean isSaved;
+	@OneToMany(mappedBy="quote", fetch = FetchType.EAGER)
 	private List<PostBean> posts;
-    @ManyToMany(mappedBy="quotes", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy="quote", fetch = FetchType.EAGER)
 	private List<UserBean> users;
 	public int getId() {
 		return id;
@@ -56,5 +58,12 @@ public class QuoteBean {
 	public void setUsers(List<UserBean> users) {
 		this.users = users;
 	}
+	public boolean isSaved() {
+		return isSaved;
+	}
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
+	}
+	
 
 }

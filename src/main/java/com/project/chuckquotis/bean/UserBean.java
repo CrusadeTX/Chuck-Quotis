@@ -1,6 +1,7 @@
 package com.project.chuckquotis.bean;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="users")
+@Table(name="user")
 public class UserBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +27,30 @@ public class UserBean {
 	private String password;
 	@Column(name="email", nullable=false, unique=true, length=256)
 	private String email;
-    @OneToMany(mappedBy="users", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
 	private List<PostBean> posts;
     @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(name="user_quote", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="quote_id"))
 	private List<QuoteBean> quotes;
+    @ManyToMany
+    @JoinTable(name="account_role",
+    		joinColumns = @JoinColumn(name="account_id"), 
+    		inverseJoinColumns = @JoinColumn(name="role_id")
+    		)
+    private Set<RoleBean> roles;
+ 
+    public UserBean() {};
+    public UserBean(String username, String email) {
+    	this.username = username;
+    	this.email = email;
+    	
+    };
+    public UserBean(String username, String password, String email ) {
+    	this.username = username;
+    	this.password = password;
+    	this.email = email;
+    	
+    };
 	public int getId() {
 		return id;
 	}
@@ -67,6 +87,13 @@ public class UserBean {
 	public void setQuotes(List<QuoteBean> quotes) {
 		this.quotes = quotes;
 	}
+	public Set<RoleBean> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<RoleBean> roles) {
+		this.roles = roles;
+	}
+	
     
 
 }

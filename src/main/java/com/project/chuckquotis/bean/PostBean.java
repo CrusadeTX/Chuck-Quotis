@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name="posts")
+@Table(name="post")
 public class PostBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
