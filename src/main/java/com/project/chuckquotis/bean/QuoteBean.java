@@ -26,7 +26,7 @@ public class QuoteBean {
 	private boolean isSaved;
 	@OneToMany(mappedBy="quote", fetch = FetchType.EAGER)
 	private List<PostBean> posts;
-    @ManyToMany(mappedBy="quote", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy="quotes", fetch = FetchType.EAGER)
 	private List<UserBean> users;
 	public int getId() {
 		return id;

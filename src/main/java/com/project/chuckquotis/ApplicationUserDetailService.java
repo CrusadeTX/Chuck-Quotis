@@ -5,11 +5,12 @@ import java.util.Set;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.project.chuckquotis.bean.RoleBean;
 import com.project.chuckquotis.bean.UserBean;
 import com.project.chuckquotis.repo.UserRepo;
-
+@Service
 public class ApplicationUserDetailService implements UserDetailsService {
 	private UserRepo userRepo;
 	public ApplicationUserDetailService (UserRepo userRepo) {

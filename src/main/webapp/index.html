@@ -32,24 +32,24 @@
         <div id="log-in-row" class="row d-flex justify-content-center my-5">
             <div class="col-6 shadow p-4">
                 <h3 class="text-center text-danger">Sign in</h3>
-                <form class="">
+                <form id="log-in-form" action="login" method="POST">
                     <div class="form-group">
                         <label for="username" class="text-danger">Username:</label>
                         <div class="input-group">
                             
-                            <input type="text" class="form-control" id="log-in-username" name="username" placeholder="">
+                            <input type="text" class="form-control" id="log-in-username" name="username" value="" placeholder="Username">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password" class="text-danger">Password:</label>
                         <div class="input-group">
                             
-                            <input type="password" class="form-control"  id="log-in-password" name="password" placeholder="">
+                            <input type="password" class="form-control"  id="log-in-password" name="password" value="" placeholder="Password">
                         </div>
                     </div>
                     <div class="text-center">
                     <input type="hidden" name="action" value="login">
-                    <button id="login" type="submit" class="btn btn-success" disabled>Log in</button>
+                    <button id="login" type="submit" class="btn btn-success">Log in</button>
                     <button id="register" type="button" class="btn btn-danger">Create a New Account</button>
 
                     </div>
@@ -59,22 +59,22 @@
         <div id="registration-row" class="row d-flex justify-content-center my-5">
             <div class="col-6 shadow p-4">
                 <h3 class="text-center text-danger" class="text-danger">New Account</h3>
-            <form id="register-form">
+            <form id="register-form" action="register" method="POST">
                 <div class="form-group">
                     <label for="register-user" class="text-danger">Username:</label>
-                    <input type="text" class="form-control" id="register-user" required placeholder="">
+                    <input type="text" class="form-control" id="register-user" name="username" required placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="register-email" class="text-danger">Email:</label>
-                    <input type="email" class="form-control" id="register-email" required placeholder="">
+                    <input type="email" class="form-control" id="register-email" name="email" required placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="register-pass" class="text-danger">Password:</label>
-                    <input type="password" class="form-control" id="register-pass" required placeholder="">
+                    <input type="password" class="form-control" id="register-pass" name="password" required placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="confirm-register-pass" class="text-danger">Repeat Password:</label>
-                    <input type="password" class="form-control" id="confirm-register-pass" required placeholder="">
+                    <input type="password" class="form-control" id="confirm-register-pass" name="repeatPassword" required placeholder="">
 
                 </div>
                 <div class="text-center">
