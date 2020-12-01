@@ -1,15 +1,26 @@
 package com.project.chuckquotis;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
+@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	private static final String LOGIN_PROCESSING_URL = "/login";
+	private static final String LOGIN_FAILURE_URL = "/login?error";
+	private static final String LOGIN_URL = "/login";
+	private static final String LOGOUT_SUCCESS_URL = "/login";
+	private PasswordEncoder passwordEncoder;
 	
 	private ApplicationUserDetailService userDetailService; 
 	
@@ -22,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
 		super.configure(auth); 
-		auth.userDetailsService(userDetailService);
+		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 	}
 
 	@Override
@@ -35,14 +46,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		 http
 	        .authorizeRequests()
-	          .antMatchers("/public/**", "/resources/**","/resources/public/**")
+	          .antMatchers("/public/**", "/resources/**","/resources/public/**", "/register", "/h2-console/**", "/")
 	            .permitAll().anyRequest().authenticated().and()
 	       .formLogin()
-	         .loginPage("/login")
+	         .loginPage("/login").defaultSuccessUrl("/home", true)
 	         .permitAll()
 	         .and()
 	      .logout() 
 	        .permitAll().and().csrf().disable();
+		 http.headers().frameOptions().disable();
 		 
 		}
 	public void configure(WebSecurity web) throws Exception {
@@ -58,8 +70,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            "/**/*.svg",
 	            "/**/*.jpg",
 	            "/**/*.css",
-	            "/**/*.js");
+	            "/**/*.js",
+	            "/console/**");
 	}
+	@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 		
 
 }

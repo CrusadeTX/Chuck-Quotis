@@ -12,7 +12,7 @@ $('#btn-back').click(function(){
     $('#registration-row').attr( "style", "display: none !important;" );
 })
 
-$('#log-in-form').submit(function(e){
+/*$('#log-in-form').submit(function(e){
 	e.preventDefault();
 	
 	$.ajax({
@@ -31,7 +31,7 @@ $('#log-in-form').submit(function(e){
      })
 	
 	
-});
+});*/
 $("#log-in-username").on("keydown", function(){
     if($("#log-in-username").val().length>0){
         hasUsername = true;

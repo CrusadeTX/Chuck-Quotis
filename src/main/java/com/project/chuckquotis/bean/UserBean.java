@@ -23,7 +23,7 @@ public class UserBean {
 	private int id;
 	@Column(name="username", nullable=false, unique=true, length = 40)
 	private String username;
-	@Column(name="password", nullable=false, length=32)
+	@Column(name="password", nullable=false, length=60)
 	private String password;
 	@Column(name="email", nullable=false, unique=true, length=256)
 	private String email;
@@ -32,7 +32,7 @@ public class UserBean {
     @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(name="user_quote", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="quote_id"))
 	private List<QuoteBean> quotes;
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(name="account_role",
     		joinColumns = @JoinColumn(name="account_id"), 
     		inverseJoinColumns = @JoinColumn(name="role_id")

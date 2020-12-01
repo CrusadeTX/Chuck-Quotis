@@ -5,10 +5,12 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,8 @@ import com.project.chuckquotis.repo.UserRepo;
 
 @Controller
 public class LoginController {
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	private UserRepo userRepo;
 	private WebSecurityConfig webSecurityConfig;
 	public LoginController(UserRepo userRepo, WebSecurityConfig webSecurityConfig) {
@@ -31,23 +35,26 @@ public class LoginController {
 		this.webSecurityConfig = webSecurityConfig;
 	}
 	@PostMapping(path="/register")
-	public UserBean register(@RequestParam(value="email")String email, @RequestParam(value="username")String username,
+	public ModelAndView register(@RequestParam(value="email")String email, @RequestParam(value="username")String username,
 			@RequestParam(value="password")String password, @RequestParam(value="repeatPassword")String repeatPassword) {
 		if(password.equals(repeatPassword)) {
-			UserBean user = new UserBean(username,hashPassword(password),email);
-			return userRepo.saveAndFlush(user);
+			UserBean user = new UserBean(username,passwordEncoder.encode(password),email);
+			userRepo.saveAndFlush(user);
+			ModelAndView model = new ModelAndView("redirect:/home.html");
+			model.setViewName("home.html");
+			model.addObject("user",user);
+			return model;
 			
 		}
-		else {
-			return null;
-		}
+		return null;
+	
 		
 	}
-	@PostMapping(path="/login")
+	/*@PostMapping(path="/login")
 	public String login(@RequestParam(value="username")String username, 
 			@RequestParam(value="password")String password, 
 			HttpSession session) {
-		UserBean user = userRepo.findUserByUsernameAndPassword(username, hashPassword(password));
+		UserBean user = userRepo.findUserByUsernameAndPassword(username,password);
 		if(user != null) {
 			session.setAttribute("user", user);
 			try {
@@ -73,7 +80,7 @@ public class LoginController {
 		
 		
 	
-	}
+	}*/
 	@GetMapping(path="/login")
 	public ModelAndView login() {
 		ModelAndView model = new ModelAndView();
@@ -81,31 +88,12 @@ public class LoginController {
 		return model;
 		
 	}
-	
-	
-private String hashPassword(String password) {
+	@GetMapping(path="/home")
+	public ModelAndView home() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("home.html");
+		return model;
 		
-		StringBuilder result = new StringBuilder();
-		
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			
-			md.update(password.getBytes());
-			
-			byte[] bytes = md.digest();
-			
-			for(int i = 0; i < bytes.length; i++) {
-				result.append((char)bytes[i]);
-			}			
-			
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}		
-	
-		return result.toString();
 	}
-
-	
-	
 
 }
