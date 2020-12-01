@@ -39,7 +39,7 @@ $("#log-in-username").on("keydown", function(){
     else{
         hasUsername = false;
     }
-    if(hasFName && hasLName){
+    if(hasUsername && hasPassword){
         $("#login").removeAttr("disabled")
     }
     else{
@@ -53,7 +53,7 @@ $("#log-in-password").on("keydown", function(){
     else{
         hasPassword =false;
     }
-    if(hasFName && hasLName){
+    if(hasUsername && hasPassword){
         $("#login").removeAttr("disabled")
     }
     else{
@@ -70,7 +70,7 @@ $("#log-in-username").on("keyup", function(){
     else{
     	hasUsername = false;
     }
-    if(hasFName && hasLName){
+    if(hasUsername && hasPassword){
         $("#login").removeAttr("disabled")
     }
     else{
@@ -84,7 +84,7 @@ $("#log-in-password").on("keyup", function(){
     else{
     	hasPassword =false;
     }
-    if(hasFName && hasLName){
+    if(hasUsername && hasPassword){
         $("#submit-personalised-quote").removeAttr("disabled")
     }
     else{
