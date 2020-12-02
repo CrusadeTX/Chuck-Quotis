@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		 http
 	        .authorizeRequests()
-	          .antMatchers("/public/**", "/resources/**","/resources/public/**", "/register", "/h2-console/**", "/")
+	          .antMatchers("/public/**", "/resources/**","/resources/public/**","/resources/templates/**", "/register", "/h2-console/**", "/")
 	            .permitAll().anyRequest().authenticated().and()
 	       .formLogin()
 	         .loginPage("/login").defaultSuccessUrl("/home", true)

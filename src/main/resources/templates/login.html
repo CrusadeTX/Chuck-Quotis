@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html     xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
         <title>Chuck Quotis</title>
@@ -32,7 +33,13 @@
         <div id="log-in-row" class="row d-flex justify-content-center my-5">
             <div class="col-6 shadow p-4">
                 <h3 class="text-center text-danger">Sign in</h3>
-                <form id="log-in-form" action="login" method="POST">
+                <form id="log-in-form" th:action="@{/login}" method="POST">
+                	<div th:if="${param.error}">
+                	<p class="text-warning text-center">Username or Password are incorrect</p>
+                	</div>
+                	<div th:if="${param.logout}">
+                	<p class="text-success text-center">You have logged out successfully</p>
+                	</div>
                     <div class="form-group">
                         <label for="username" class="text-danger">Username:</label>
                         <div class="input-group">
@@ -50,15 +57,15 @@
                     <div class="text-center">
                     <input type="hidden" name="action" value="login">
                     <button id="login" type="submit" class="btn btn-success">Log in</button>
-                    <button id="register" type="button" class="btn btn-danger">Create a New Account</button>
+                    <a id="register" class="btn btn-danger" href="/register">Create a New Account</a>
 
                     </div>
                 </form>
             </div>
         </div>
-        <div id="registration-row" class="row d-flex justify-content-center my-5">
+      <!--  <div id="registration-row" class="row d-flex justify-content-center my-5">
             <div class="col-6 shadow p-4">
-                <h3 class="text-center text-danger" class="text-danger">New Account</h3>
+                <h3 class="text-center text-danger">New Account</h3>
             <form id="register-form" action="register" method="POST">
                 <div class="form-group">
                     <label for="register-user" class="text-danger">Username:</label>
@@ -85,7 +92,7 @@
             </form>
             </div>
 
-        </div>
+        </div> -->
     </div>
     <script src="assets/js/index-page.js"></script>
 </body>

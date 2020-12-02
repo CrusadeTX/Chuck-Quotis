@@ -1,7 +1,7 @@
 var hasUsername = false;
 var hasPassword = false;
 
-/*$(document).ready(function(){
+$(document).ready(function(){
 $('#registration-row').attr( "style", "display: none !important;" );
 $('#register').on('click', function(){
     $('#log-in-row').attr( "style", "display: none !important;" );
@@ -10,7 +10,7 @@ $('#register').on('click', function(){
 $('#btn-back').click(function(){
     $('#log-in-row').attr( "style", "display: flex !important;" );
     $('#registration-row').attr( "style", "display: none !important;" );
-})*/
+})
 
 /*$('#log-in-form').submit(function(e){
 	e.preventDefault();

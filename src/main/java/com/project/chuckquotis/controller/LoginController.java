@@ -2,6 +2,7 @@ package com.project.chuckquotis.controller;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,20 +32,46 @@ public class LoginController {
 	private PasswordEncoder passwordEncoder;
 	private UserRepo userRepo;
 	private WebSecurityConfig webSecurityConfig;
+	private List<UserBean> foundUsers;
+
+	
 	public LoginController(UserRepo userRepo, WebSecurityConfig webSecurityConfig) {
 		this.userRepo = userRepo;
 		this.webSecurityConfig = webSecurityConfig;
 	}
 	@PostMapping(path="/register")
+	
 	public ModelAndView register(@RequestParam(value="email")String email, @RequestParam(value="username")String username,
 			@RequestParam(value="password")String password, @RequestParam(value="repeatPassword")String repeatPassword) {
+		 boolean usernameExists = false;
+		 boolean emailExists = false;
 		if(password.equals(repeatPassword)) {
 			UserBean user = new UserBean(username,passwordEncoder.encode(password),email);
-			userRepo.saveAndFlush(user);
-			ModelAndView model = new ModelAndView("redirect:/home.html");
-			model.setViewName("home.html");
-			model.addObject("user",user);
-			return model;
+			foundUsers = userRepo.findAll();
+			for(UserBean foundUser : foundUsers) {
+				if(foundUser.getUsername().equals(username)) {
+					usernameExists = true;
+				}
+				if(foundUser.getEmail().equals(email)) {
+					emailExists = true;
+				}
+			}
+			if(usernameExists || emailExists) {
+				ModelAndView model = new ModelAndView();
+				model.addObject("usernameExists", usernameExists);
+				model.addObject("emailExists",emailExists);
+				model.setViewName("register.html");
+				return model;
+			}
+			else {
+				ModelAndView model = new ModelAndView("redirect:/home");
+				userRepo.saveAndFlush(user);
+				model.addObject("user",user);
+				return model;
+			}
+			
+			//ModelAndView model = new ModelAndView("redirect:/home.html");
+		
 			
 		}
 		return null;
@@ -88,9 +116,20 @@ public class LoginController {
 		return model;
 		
 	}
+	@GetMapping(path="/register")
+	public ModelAndView register(ModelAndView model) {
+		if (model==null) {
+		model = new ModelAndView();
+		}
+		model.setViewName("register.html");
+		return model;
+		
+	}
 	@GetMapping(path="/home")
-	public ModelAndView home() {
-		ModelAndView model = new ModelAndView();
+	public ModelAndView home(ModelAndView model) {
+		if (model==null) {
+		model = new ModelAndView();
+		}
 		model.setViewName("home.html");
 		return model;
 		
