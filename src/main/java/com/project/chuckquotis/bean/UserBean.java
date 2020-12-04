@@ -3,6 +3,7 @@ package com.project.chuckquotis.bean;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class UserBean {
     @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(name="user_quote", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="quote_id"))
 	private List<QuoteBean> quotes;
-    @ManyToMany( fetch = FetchType.EAGER)
+    @ManyToMany( fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(name="account_role",
     		joinColumns = @JoinColumn(name="account_id"), 
     		inverseJoinColumns = @JoinColumn(name="role_id")

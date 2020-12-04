@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html     xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">>
     <head>
         <meta charset="UTF-8">
         <title>Chuck Quotis</title>
@@ -19,8 +20,9 @@
                 </div> 
             </div> 
         </div>
-        <div class="row bg-danger justify-content-center">
-            <a class="nav-item nav-link active text-white" href="home.html">Home</a>
+        <div class="row bg-danger justify-content-center" sec:authorize="isAuthenticated()">
+ 			Authenticated as <span sec:authentication="name"></span>
+            <a class="nav-item nav-link active text-white" href="/home">Home</a>
             <a class="nav-item nav-link text-white" href="profile.html">Profile</a>
             <a class="nav-item nav-link text-white" href="quote.html">Quotes</a>
             <a class="nav-item nav-link text-white" href="posts.html">Posts</a>
