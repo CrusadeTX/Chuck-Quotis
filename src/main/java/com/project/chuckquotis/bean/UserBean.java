@@ -16,8 +16,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="user")
+@JsonIgnoreProperties({"quotes","posts","roles"})
 public class UserBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +33,9 @@ public class UserBean {
 	private String email;
     @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
 	private List<PostBean> posts;
-    @ManyToMany( fetch = FetchType.EAGER)
-    @JoinTable(name="user_quote", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="quote_id"))
+   // @ManyToMany( fetch = FetchType.EAGER)
+   // @JoinTable(name="user_quote", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="quote_id"))
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
 	private List<QuoteBean> quotes;
     @ManyToMany( fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(name="account_role",

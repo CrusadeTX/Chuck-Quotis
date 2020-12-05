@@ -71,5 +71,11 @@ public class UserPrincipal implements UserDetails {
 		
 		return true;
 	}
+	public int getLoggedInUserId() {
+		return user.getId();
+	}
+	public UserBean getLoggedInUser() {
+		return user;
+	}
 
 }

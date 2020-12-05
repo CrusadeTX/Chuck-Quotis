@@ -8,12 +8,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="quote")
+@JsonIgnoreProperties({"posts"})
 public class QuoteBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +31,9 @@ public class QuoteBean {
 	private boolean isSaved;
 	@OneToMany(mappedBy="quote", fetch = FetchType.EAGER)
 	private List<PostBean> posts;
-    @ManyToMany(mappedBy="quotes", fetch = FetchType.EAGER)
-	private List<UserBean> users;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+	private UserBean user;
 	public int getId() {
 		return id;
 	}
@@ -52,11 +58,11 @@ public class QuoteBean {
 	public void setPosts(List<PostBean> posts) {
 		this.posts = posts;
 	}
-	public List<UserBean> getUsers() {
-		return users;
+	public UserBean getUser() {
+		return user;
 	}
-	public void setUsers(List<UserBean> users) {
-		this.users = users;
+	public void setUser(UserBean user) {
+		this.user = user;
 	}
 	public boolean isSaved() {
 		return isSaved;
@@ -64,6 +70,7 @@ public class QuoteBean {
 	public void setSaved(boolean isSaved) {
 		this.isSaved = isSaved;
 	}
+	
 	
 
 }
