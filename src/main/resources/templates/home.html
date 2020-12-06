@@ -58,12 +58,12 @@
             </div>
             <form class="d-flex align-items-center">
                 <div class="custom-control custom-radio mx-2">
-                    <input type="radio" id="customRadio4" name="filter" value="nerdy" class="custom-control-input">
-                    <label class="custom-control-label text-danger h6" for="customRadio4">Nerdy</label>
+                    <input type="radio" id="customRadio4" name="filter" value="custom" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio4">Custom</label>
                   </div>
                   <div class="custom-control custom-radio mx-2">
-                    <input type="radio" id="customRadio5" name="filter" value="explicit"class="custom-control-input">
-                    <label class="custom-control-label text-danger h6" for="customRadio5">Explicit</label>
+                    <input type="radio" id="customRadio5" name="filter" value="saved"class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio5">Saved</label>
                   </div>
                   <div class="custom-control custom-radio mx-2">
                     <input type="radio" id="customRadio6" name="filter" value="all" class="custom-control-input">
@@ -170,6 +170,32 @@
                         </div>
                     </div>
                 </div>
+                    <div class="shadow p-3 mt-3">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-center text-danger">Create a Custom Quote</h3>
+                    <form class="">
+                        <div class="form-group">
+                            <label for="custom-quote-text" class="text-danger">Quote Text:</label>
+                            <div class="input-group">
+                                
+                                <textarea class="form-control" id="custom-quote-text" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                        <button id="submit-custom-quote" type="button" class="btn btn-danger">Create Quote</button>
+                        </div>
+                    </form>
+                    </div>
+                    </div>
+                    <div id="custom-quote-container" class="row bg-danger text-wrap text-center m-3 p-1 result-container">
+                        <div class="col">
+                            <i class="fas fa-quote-left text-white"></i>
+                            <span id="result-custom-quote" class="text-white"> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                            <i class="fas fa-quote-right text-white"></i>
+                        </div>
+                    </div>
+                </div>
 
                 </div>
             </div>
@@ -194,6 +220,374 @@
 
 
         <script src="assets/js/jquery/jquery-3.5.1.js"></script>
-        <script src="assets/js/main.js"></script>
+       <!--<script src="assets/js/main.js"></script>-->
+        
     </body>
+    <script>
+  /// <reference path="../typings/tsd.d.ts" /
+    var hasLName = false;
+    var hasFName = false;
+    $(document).ready(function(){
+    $("#random-quote-container").hide();
+    $("#personalised-quote-container").hide();
+
+        function doApiRequest(type){       
+            $.ajax({
+               method: "GET",
+               url: QueryBuilder(type),
+               dataType: "json"
+            }).done(function(response){
+            	
+                switch(type){
+                    case "random": getRandomQuote(response.value.joke); break;
+                    case "": getAllQuotes(response.value);break;
+                    case "personalised": getPersonalisedQuote(response.value.joke); break;
+                }
+            }).fail(function(){
+                console.log("Something went wrong")
+            })
+    }
+    function getAllQuotes(data){
+        clearAllQuotes();
+        showChangeViewButton();
+        for (i=0;i<data.length;i++){
+        var template = $('#card-template').clone();
+        template.attr('id', 'quote-card-'+i);
+        template.find('span').text(decodeEntities(data[i].joke));
+        var text = template.find('span').text()
+        var img = template.find('img');
+        (function(i){
+		$.ajax({
+    		url: "/quote/issaved",
+    		method: "POST",
+    		data : {
+    			text : decodeEntities(data[i].joke)
+    		},
+    		success : function(response){
+    			if(response == true){
+    			$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+    			}
+    			else{
+    			$('#quote-card-'+i).find('.btn-success').removeAttr("disabled");
+    		    console.log(i)
+    			}
+    		},
+    		fail : function(){
+    			alert("Something went terribly wrong!!!")
+    		}
+    	})
+        })(i);
+        
+        generateImage(img);
+        /*$('#quote-card-'+i).find('.btn-success').on('click',(function(){
+        	var imgPath = generateCustomImagePath;
+        	var saved = true;
+        	var custom = false;
+        	(function(i){
+        	addQuote(imgPath,decodeEntities(data[i].joke),saved,custom);
+        	console.log(decodeEntities(data[i].joke))
+        	})(i);
+
+ 
+    			$.ajax({
+            		url: "/quote/issaved",
+            		method: "POST",
+            		data : {
+            			text : text
+            		},
+            		success : function(response){
+            			if(response == true){
+            				$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+            			}
+            			else{
+            				$('#quote-card-'+i).find('.btn-success').removeAttr("disabled");
+            			}
+            		},
+            		fail : function(){
+            			alert("Something went terribly wrong!!!")
+            		}
+            	})
+    		
+        }))*/;
+        $('#quote-container').append(template);
+        template.show();
+        }
+        attachOnClickEvents();
+        
+    }
+	
+    
+    
+    
+    
+    
+    function clearAllQuotes(){
+     $("#quote-container").empty();
+    }
+    function getPersonalisedQuote(data){
+        $("#result-personalised-quote").text(decodeEntities(data))
+        $("#personalised-quote-container").show();
+        $("#first-name").val("");
+        $("#last-name").val("");
+        $("#submit-personalised-quote").attr("disabled", true)
+
+
+    }
+
+
+    function getRandomQuote(data){
+        $("#first-name").val("");
+        $("#last-name").val("");
+        $("#result-random-quote").text(decodeEntities(data))
+        $("#random-quote-container").show();
+        $("#submit-personalised-quote").attr("disabled", true)
+    }
+    function decodeEntities(encodedString) {
+        var textArea = document.createElement('textarea');
+        textArea.innerHTML = encodedString;
+        return textArea.value;
+      }
+
+    function changeView(){
+        var quotes = $("#quote-container>div");
+        var images;
+        if(quotes.length>0){
+            
+            images = $("#quote-container").find("img");
+            button = $("#quote-container").find("button");
+            if(quotes.hasClass("card")){
+                quotes.removeClass("card");
+                quotes.removeClass("m-2");
+                quotes.removeClass("shadow");
+                quotes.removeClass("card-quote");
+                quotes.addClass("d-flex");
+                quotes.addClass("border-top");
+                quotes.addClass("w-100");
+                images.addClass("thumbnail");
+                images.removeClass("img-full-size");
+                button.removeClass("mb-3");
+                button.addClass("mt-3");
+                button.removeClass("d-inline-block");
+                button.addClass("d-block");
+                button.addClass("w-100");
+            }
+            else{
+                quotes.addClass("card");
+                quotes.addClass("m-2");
+                quotes.addClass("shadow");
+                quotes.addClass("card-quote");
+                quotes.removeClass("d-flex");
+                quotes.removeClass("border-top");
+                quotes.removeClass("w-100");
+                images.removeClass("thumbnail");
+                images.addClass("img-full-size");
+                button.removeClass("mt-3");
+                button.addClass("mb-3");
+                button.addClass("d-inline-block");
+                button.removeClass("d-block");
+                button.removeClass("w-100");
+            }
+        }
+    }
+    function showChangeViewButton(){
+        $("#change-view-btn").show();
+
+    }
+    function generateImage(img){
+        var random = getRandomInt(7);
+        var imgPath = "assets/images/"+random.toString()+".jpg";
+        img.attr("src",imgPath);
+        img.show();
+
+    }
+    function getRandomInt(max) {
+        return 1+Math.floor(Math.random() * Math.floor(max));
+      }
+
+    $('input[name="limit"]').click(function(){
+      doApiRequest("")
+    })
+    $("#submit-random-quote").click(function(){
+        doApiRequest("random")
+    })
+    $("#submit-personalised-quote").click(function(){
+        doApiRequest("personalised")
+        hasFName=false;
+        hasLName=false;
+    })
+    $("#first-name").on("keydown", function(){
+        if($("#first-name").val().length>0){
+            hasFName = true;
+        }
+        else{
+            hasFName = false;
+        }
+        if(hasFName && hasLName){
+            $("#submit-personalised-quote").removeAttr("disabled")
+        }
+        else{
+            $("#submit-personalised-quote").attr("disabled", true)
+        }
+    })
+    $("#last-name").on("keydown", function(){
+        if($("#last-name").val().length>0){
+            hasLName = true;
+        }
+        else{
+            hasLName =false;
+        }
+        if(hasFName && hasLName){
+            $("#submit-personalised-quote").removeAttr("disabled")
+        }
+        else{
+            $("#submit-personalised-quote").attr("disabled", true)
+        }
+
+
+
+    })
+    $("#first-name").on("keyup", function(){
+        if($("#first-name").val().length>0){
+            hasFName = true;
+        }
+        else{
+            hasFName = false;
+        }
+        if(hasFName && hasLName){
+            $("#submit-personalised-quote").removeAttr("disabled")
+        }
+        else{
+            $("#submit-personalised-quote").attr("disabled", true)
+        }
+    })
+    $("#last-name").on("keyup", function(){
+        if($("#last-name").val().length>0){
+            hasLName = true;
+        }
+        else{
+            hasLName =false;
+        }
+        if(hasFName && hasLName){
+            $("#submit-personalised-quote").removeAttr("disabled")
+        }
+        else{
+            $("#submit-personalised-quote").attr("disabled", true)
+        }
+
+    })
+    $("#change-view-btn").click(function(){
+        changeView();
+    })
+    function QueryBuilder(type){
+        var fname="";
+        var lname="";
+        var limit="";
+        var creds="";
+        var apiLimit="";
+        var apiType="";
+
+        if(type === "random" || type ==="personalised"){
+        apiType ="random";
+        fname = $("#first-name").val();
+        lname = $("#last-name").val();
+        if(fname !=="" && lname !==""){
+            creds = "firstName=" + fname + "&lastName=" + lname;
+        }
+        }
+        else{
+        apiType="";
+        creds="";;
+        }
+       var limit = $('input[name="limit"]:checked').val();
+       if(limit === undefined){
+           limit="all";
+       }
+        switch(limit){
+            case "nerdy": apiLimit ="?limitTo=[nerdy]";
+            if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
+                creds = "&firstName=" + fname + "&lastName=" + lname};
+             break;
+            case "explicit": apiLimit ="?limitTo=[explicit]";
+            if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
+                creds = "&firstName=" + fname + "&lastName=" + lname}; 
+            break;
+            case "all": apiLimit ="";
+            if(fname !=="" && lname !=="" && (type==="random" || type==="personalised")){
+                creds = "?firstName=" + fname + "&lastName=" + lname;
+            }; break;
+            default: apiLimit =""; break;
+        }
+        if(type === "random"){
+            creds ="";
+        }
+
+        var query = "https://api.icndb.com/jokes/"+apiType+apiLimit+creds;
+        return query;
+    }
+	$('#submit-custom-quote').click(function(){
+		var quote = $('#custom-quote-text').val();
+		var imgPath = generateCustomImagePath();
+		addQuote(imgPath,quote,false,true)
+
+		
+		
+	})
+	function addQuote(imgPath,quote,saved,custom){
+		if (quote.length>0){
+			$.ajax({
+        		url: "/quote/add",
+        		method: "POST",
+        		data : {
+        			icon : imgPath,
+        			text : quote,
+        			saved : saved,
+        			custom : custom
+        		},
+        		success : function(response){
+        			if(response.includes("Error")){
+        				$('#result-custom-quote').text(response)
+        				//alert(response)
+        			}
+        			else{
+        				//postComment(cityName,('#comment').val(),data.main.temp,data.weather[0].id.ToString(), response, response.user.id);
+        				$('#result-custom-quote').text("Quote has been created successfully")
+        				alert("Quote has been created successfully")
+        			}
+        		},
+        		fail : function(){
+        			$('#result-custom-quote').text("Something went terribly wrong!!!")
+        			//alert("Something went terribly wrong!!!")
+        		}
+        	})
+		}
+		
+	}
+	function attachOnClickEvents(){
+    	var saved = true;
+    	var custom = false;
+		var container = $('#quote-container');
+		for (i=0; i <container.children().length; i++){
+			(function(i){
+			var imgPath = generateCustomImagePath;
+			var text = $('#quote-card-'+i).find('span').text();
+			console.log("i am here")
+			
+			$('#quote-card-'+i).find('.btn-success').on('click',function(){
+				addQuote(imgPath,text,saved,custom);
+				$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+            	})
+				
+			})(i);
+		}
+		 
+	 }
+	    function generateCustomImagePath(){
+        var random = getRandomInt(7);
+        var imgPath = "assets/images/"+random.toString()+".jpg";
+        return imgPath;
+    }
+    })
+    
+
+    </script>
 </html>

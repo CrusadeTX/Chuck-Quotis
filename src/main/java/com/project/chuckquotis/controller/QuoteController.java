@@ -1,5 +1,6 @@
 package com.project.chuckquotis.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class QuoteController {
 	}
 	
 	@PostMapping(path="/quote/add")
-	public String addQuote(@RequestParam(value="icon")String iconPath, @RequestParam(value="text")String text,@RequestParam(value="saved") boolean isSaved,@AuthenticationPrincipal UserPrincipal principal ) {
+	public String addQuote(@RequestParam(value="icon")String iconPath, @RequestParam(value="text")String text,@RequestParam(value="saved") boolean isSaved, @RequestParam(value="custom")boolean isCustom,@AuthenticationPrincipal UserPrincipal principal ) {
 		UserBean user = principal.getLoggedInUser();
 		if(user != null) {
 			QuoteBean quoteBean = new QuoteBean();
@@ -36,6 +37,7 @@ public class QuoteController {
 			quoteBean.setText(text);
 			quoteBean.setSaved(isSaved);
 			quoteBean.setUser(user);
+			quoteBean.setCustom(isCustom);
 			quoteBean = quoteRepo.saveAndFlush(quoteBean);
 			if(quoteBean != null) {
 				return String.valueOf(quoteBean.getId());
@@ -50,6 +52,43 @@ public class QuoteController {
 	public List<QuoteBean> getAllQuotes(){
 		return quoteRepo.findAll();
 		
+	}
+	@PostMapping(path="/quote/issaved")
+	public ResponseEntity<Boolean> CheckifSaved(@RequestParam(value="text")String text, @AuthenticationPrincipal UserPrincipal principal) {
+		UserBean user = principal.getLoggedInUser();
+		List<QuoteBean> foundQuotes = quoteRepo.findByText(text);
+		for(QuoteBean quote : foundQuotes) {
+			if(quote.getUser().getId() == user.getId()) {
+				return new ResponseEntity<>(true, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(false, HttpStatus.OK);
+		
+		
+	}
+	@GetMapping(path="/quote/saved")
+	public List<QuoteBean> getSavedQuotes(@AuthenticationPrincipal UserPrincipal principal){
+		UserBean user = principal.getLoggedInUser();
+		List<QuoteBean> retrievedQuotes = quoteRepo.findAll();
+		List<QuoteBean> result = new ArrayList<QuoteBean>();
+		for(QuoteBean quote : retrievedQuotes) {
+			if(quote.isSaved() &&(quote.getUser().getId() == user.getId())) {
+				result.add(quote);
+			}
+		}
+		return result;
+	}
+	@GetMapping(path="/quote/custom")
+	public List<QuoteBean> getCustomQuotes(@AuthenticationPrincipal UserPrincipal principal){
+		UserBean user = principal.getLoggedInUser();
+		List<QuoteBean> retrievedQuotes = quoteRepo.findAll();
+		List<QuoteBean> result = new ArrayList<QuoteBean>();
+		for(QuoteBean quote : retrievedQuotes) {
+			if(quote.isCustom()&&(quote.getUser().getId() == user.getId())) {
+				result.add(quote);
+			}
+		}
+		return result;
 	}
 	@DeleteMapping(path="/quote/delete")
 	public ResponseEntity<Boolean> deleteQuote(@RequestParam(value="id")int id,@AuthenticationPrincipal UserPrincipal principal ){

@@ -29,6 +29,8 @@ public class QuoteBean {
 	private String text;
 	@Column(name="saved", nullable=false)
 	private boolean isSaved;
+	@Column(name="custom", nullable=false)
+	private boolean isCustom;
 	@OneToMany(mappedBy="quote", fetch = FetchType.EAGER)
 	private List<PostBean> posts;
     @ManyToOne
@@ -69,6 +71,12 @@ public class QuoteBean {
 	}
 	public void setSaved(boolean isSaved) {
 		this.isSaved = isSaved;
+	}
+	public boolean isCustom() {
+		return isCustom;
+	}
+	public void setCustom(boolean isCustom) {
+		this.isCustom = isCustom;
 	}
 	
 	
