@@ -210,7 +210,7 @@
             <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
           </div>
             <div class="text-center">
-            <button class="btn btn-success mb-3 mx-2" type="button">Save</button>
+            <button class="btn btn-success btn-act mb-3 mx-2" type="button">Save</button>
             <button class="btn btn-primary   mb-3 mx-2" type="button">Share</button>
             </div>
         </div>
@@ -265,11 +265,18 @@
     		},
     		success : function(response){
     			if(response == true){
-    			$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+    			//$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+    				$('#quote-card-'+i).find('.btn-act').html("Remove");
+    				$('#quote-card-'+i).find('.btn-act').addClass("btn-danger");
+    				$('#quote-card-'+i).find('.btn-act').removeClass("btn-success");
     			}
     			else{
-    			$('#quote-card-'+i).find('.btn-success').removeAttr("disabled");
-    		    console.log(i)
+    			//$('#quote-card-'+i).find('.btn-success').removeAttr("disabled");
+    				$('#quote-card-'+i).find('.btn-act').html("Save");
+    				$('#quote-card-'+i).find('.btn-act').addClass("btn-success");
+    				$('#quote-card-'+i).find('.btn-act').removeClass("btn-danger");
+    				
+    				
     			}
     		},
     		fail : function(){
@@ -545,18 +552,18 @@
         		},
         		success : function(response){
         			if(response.includes("Error")){
-        				$('#result-custom-quote').text(response)
-        				//alert(response)
+        				//$('#result-custom-quote').text(response)
+        				alert(response)
         			}
         			else{
-        				//postComment(cityName,('#comment').val(),data.main.temp,data.weather[0].id.ToString(), response, response.user.id);
-        				$('#result-custom-quote').text("Quote has been created successfully")
+        				
+        				//$('#result-custom-quote').text("Quote has been created successfully")
         				alert("Quote has been created successfully")
         			}
         		},
         		fail : function(){
-        			$('#result-custom-quote').text("Something went terribly wrong!!!")
-        			//alert("Something went terribly wrong!!!")
+        			
+        			alert("Something went terribly wrong!!!")
         		}
         	})
 		}
@@ -570,22 +577,47 @@
 			(function(i){
 			var imgPath = generateCustomImagePath;
 			var text = $('#quote-card-'+i).find('span').text();
-			console.log("i am here")
 			
-			$('#quote-card-'+i).find('.btn-success').on('click',function(){
+			$('#quote-card-'+i).find('.btn-act').on('click',function(){
+				if($('#quote-card-'+i).find('.btn-act').html()==="Save"){
 				addQuote(imgPath,text,saved,custom);
-				$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+				//$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
+				$('#quote-card-'+i).find('.btn-act').html("Remove");
+				}
+				else{
+					deleteQuote(text);
+					$('#quote-card-'+i).find('.btn-act').html("Remove");
+				}
             	})
 				
 			})(i);
 		}
 		 
 	 }
+		function deleteQuote(text){
+			 $.ajax({
+		        	url: "/quote/delete",
+		        	method: "DELETE",
+		        	data: {text : text},
+		        	complete: function(data){
+		        		if(data.status==200){
+		        			alert("Delete Successful")
+		        		}
+		        		if(data.status==401){
+		        			alert("Delete Failed!!! You cant delete other people's quotes")
+		        		}
+		        		if(data.status==404){
+		        			alert("Delete Failed!!! No such comment exists")
+		        		}
+		        		}
+		        	})
+		}
 	    function generateCustomImagePath(){
         var random = getRandomInt(7);
         var imgPath = "assets/images/"+random.toString()+".jpg";
         return imgPath;
     }
+	    
     })
     
 
