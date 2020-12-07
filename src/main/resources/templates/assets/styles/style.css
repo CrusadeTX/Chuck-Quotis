@@ -5,6 +5,8 @@
 
 .card-quote {
     width: 14rem;
+    min-height: 14rem;
+    
 }
 
 .thumbnail{
@@ -30,4 +32,8 @@ input:valid {
 
   a:hover {
   background-color: darkred;
+}
+
+#quote-container{
+	height: fit-content !important;
 }

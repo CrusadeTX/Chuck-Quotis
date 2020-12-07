@@ -74,7 +74,7 @@
         </div>
         </div>
             <div class="row mt-3 d-flex mx-0 mx-lg-0">
-                <div id="quote-container" class="col-lg-9 d-flex flex-wrap col-12 justify-content-center order-2 order-lg-1">
+                <div id="quote-container" class="col-lg-9 d-flex flex-wrap col-12 justify-content-center order-2 order-lg-1" style="height: fit-content !important;">
                    <!-- <div class="panel panel-default hidden-sm hidden-xs d-inline-flex">-->
                       
 
@@ -197,7 +197,7 @@
 
 
 
-        <div id="card-template" style="display: none; height: fit-content;" class="card shadow m-2 card-quote">
+        <div id="card-template" style="display: none;" class="card shadow m-2 card-quote">
             <img class="card-img-top img-full-size" src="" alt="Card image cap">
             <div class="card-body">
             <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
@@ -247,6 +247,7 @@
         var template = $('#card-template').clone();
         template.attr('id', 'quote-card-'+i);
         template.find('span').text(decodeEntities(data[i].joke));
+        template.find('.btn-primary').remove();
         var text = template.find('span').text()
         var img = template.find('img');
         (function(i){
@@ -407,7 +408,7 @@
     	switch(filter){
     	case "all":
 			$.ajax({
-        		url: "/quote/all",
+        		url: "/quote/alluserquotes",
         		method: "GET",
         		success : function(response){
 					response.forEach(function(quote){
@@ -476,12 +477,14 @@
 	}
 
     $('input[name="limit"]').click(function(){
+    $('input[name="filter"]').prop("checked", false);
       clearAllQuotes();
       showChangeViewButton();
       doApiRequest("")
     })
     $('input[name="filter"]').click(function(){
-    	alert("clicked")
+    	$('input[name="limit"]').prop("checked", false);
+    	//alert("clicked")
     	clearAllQuotes();
         showChangeViewButton();
       var filter = $('input[name="filter"]:checked').val();

@@ -53,6 +53,21 @@ public class QuoteController {
 		return quoteRepo.findAll();
 		
 	}
+	@GetMapping(path="/quote/alluserquotes")
+	public List<QuoteBean> getAllUserQuotes( @AuthenticationPrincipal UserPrincipal principal){
+		UserBean user = principal.getLoggedInUser();
+		List<QuoteBean> retrievedQuotes = quoteRepo.findAll();
+		List<QuoteBean> result = new ArrayList<QuoteBean>();
+		for(QuoteBean quote : retrievedQuotes) {
+			if(quote.getUser().getId() == user.getId()) {
+				result.add(quote);
+			}
+		}
+		return result;
+		
+	}
+	
+	
 	@PostMapping(path="/quote/issaved")
 	public ResponseEntity<Boolean> CheckifSaved(@RequestParam(value="text")String text, @AuthenticationPrincipal UserPrincipal principal) {
 		UserBean user = principal.getLoggedInUser();
