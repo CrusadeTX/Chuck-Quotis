@@ -27,6 +27,8 @@ public class QuoteController {
 	public QuoteController(QuoteRepo quoteRepo) {
 		this.quoteRepo=quoteRepo;
 	}
+	//@RequestMapping (value = "/quote/edit}", method = RequestMethod.GET)
+		
 	
 	@PostMapping(path="/quote/add")
 	public String addQuote(@RequestParam(value="icon")String iconPath, @RequestParam(value="text")String text,@RequestParam(value="saved") boolean isSaved, @RequestParam(value="custom")boolean isCustom,@AuthenticationPrincipal UserPrincipal principal ) {
@@ -37,6 +39,28 @@ public class QuoteController {
 			quoteBean.setText(text);
 			quoteBean.setSaved(isSaved);
 			quoteBean.setUser(user);
+			quoteBean.setCustom(isCustom);
+			quoteBean = quoteRepo.saveAndFlush(quoteBean);
+			if(quoteBean != null) {
+				return String.valueOf(quoteBean.getId());
+			}
+			return "Error: insert unsuccessful";
+		}
+		else {
+			return "Error: not logged in";
+		}
+	}
+	@PostMapping(path="/quote/update")
+	public String updateQuote(@RequestParam(value="id")int id,@RequestParam(value="icon")String iconPath, @RequestParam(value="text")String text,@RequestParam(value="saved") boolean isSaved, @RequestParam(value="custom")boolean isCustom,@AuthenticationPrincipal UserPrincipal principal ) {
+		
+		UserBean user = principal.getLoggedInUser();
+		//List<QuoteBean> Quotes = quoteRepo.findAll();
+		if(user != null) {
+			QuoteBean quoteBean = quoteRepo.getOne(id);
+			quoteBean.setIconPath(iconPath);
+			quoteBean.setText(text);
+			quoteBean.setSaved(isSaved);
+			//quoteBean.setUser(user);
 			quoteBean.setCustom(isCustom);
 			quoteBean = quoteRepo.saveAndFlush(quoteBean);
 			if(quoteBean != null) {

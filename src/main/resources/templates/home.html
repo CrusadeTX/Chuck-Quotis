@@ -173,7 +173,7 @@
                     <div class="shadow p-3 mt-3">
                     <div class="row">
                         <div class="col">
-                            <h3 class="text-center text-danger">Create a Custom Quote</h3>
+                            <h3 id="create-update-quote" class="text-center text-danger">Custom Quote</h3>
                     <form class="">
                         <div class="form-group">
                             <label for="custom-quote-text" class="text-danger">Quote Text:</label>
@@ -182,8 +182,10 @@
                                 <textarea class="form-control" id="custom-quote-text" rows="3"></textarea>
                             </div>
                         </div>
-                        <div class="text-center">
-                        <button id="submit-custom-quote" type="button" class="btn btn-danger">Create Quote</button>
+                        <div class="d-flex  justify-content-center">
+                        <button id="submit-custom-quote" type="button" class="btn btn-danger m-1" >Add</button>
+                         <button id="update-custom-quote" type="button" class="btn btn-danger m-1" disabled >Update</button>
+                        
                         </div>
                     </form>
                     </div>
@@ -204,7 +206,7 @@
           </div>
             <div class="text-center">
             <button class="btn btn-success btn-act mb-3 mx-2" type="button">Save</button>
-            <button class="btn btn-primary   mb-3 mx-2" type="button">Share</button>
+            <button class="btn btn-primary   mb-3 mx-2" type="button">Edit</button>
             </div>
         </div>
 
@@ -220,6 +222,7 @@
   /// <reference path="../typings/tsd.d.ts" /
     var hasLName = false;
     var hasFName = false;
+    var updatePressed = false
     $(document).ready(function(){
     $("#random-quote-container").hide();
     $("#personalised-quote-container").hide();
@@ -463,18 +466,79 @@
        button.addClass("btn-danger");
        button.removeClass("btn-success");
        button.on('click',function(){
+    	   alert(quote.id)
     	   			deleteQuoteById(quote.id,template);
+    	   			
 					
         	})
-                template.find('.btn-primary').on('click',function(){
-                	
-					 window.location.href='quote/edit/'+quote.id;
+       var initialText = quote.text
+         template.find('.btn-primary').on('click',function(){
+             $('#update-custom-quote').removeAttr("disabled")
+             $('#submit-custom-quote').attr("disabled", true)
+             updatePressed =true
+    	 alert("i am clicked")
+       //$('#create-update-quote').text("Edit Quote:");
+    	 alert(quote.id)
+         $('#custom-quote-text').val(quote.text);
+       //$('#submit-custom-quote').html("Update Quote")
+       //$('#submit-custom-quote').attr("id","update-custom-quote")
+         $('#update-custom-quote').on('click',function(){
+         quote.text = $('#custom-quote-text').val();
+            if(initialText !== quote.text){
+               quote.isSaved = false;
+               quote.isCustom = true;
+               alert(quote.id)
+               //updateQuote(quote);
+       		alert("quote to be sent" + quote.id)
+    		if (quote.text.length>0){
+    			$.ajax({
+            		url: "/quote/update",
+            		method: "POST",
+            		data : {
+            			id   : quote.id,
+            			icon : quote.iconPath,
+            			text : quote.text,
+            			saved : quote.isSaved,
+            			custom : quote.isCustom
+            		},
+            		success : function(response){
+            			if(response.includes("Error")){
+            				//$('#result-custom-quote').text(response)
+            				alert(response)
+            			}
+            			else{
+                    		//$('#update-custom-quote').attr("id","submit-custom-quote")
+                    		//$('#submit-custom-quote').html("Add Quote")
+                    		//$('#create-update-quote').text("Create Quote:");
+                    		$('#custom-quote-text').val('');
+                    		updatePressed = false;
+                    		$('#update-custom-quote').attr("disabled", true)
+                    		$('#submit-custom-quote').removeAttr("disabled")
+                    		
+            				//$('#result-custom-quote').text("Quote has been created successfully")
+            				alert("Quote has been updated successfully")
+            			}
+            		},
+            		fail : function(){
+            			
+            			alert("Something went terribly wrong!!!")
+            		}
+            	})
+    		}
+               
+                }
+             else{
+                 alert("You havent made any changes!");
+                }
+                		
+               })
         	})
         $('#quote-container').append(template);
         template.show();
+		}
         
 		
-	}
+
 
     $('input[name="limit"]').click(function(){
     $('input[name="filter"]').prop("checked", false);
@@ -559,6 +623,42 @@
         }
 
     })
+    
+ /*    $("#custom-quote-text").on("keydown", function(){
+    	 if($("custom-quote-text").val()!=''){
+    		 if(updatePressed){
+         	$("#update-custom-quote").removeAttr("disabled")
+    		 }
+         	$("#submit-custom-quote").removeAttr("disabled")
+         }
+         else{
+         	$("#update-custom-quote").attr("disabled", true)
+         	$("#submit-custom-quote").attr("disabled", true)
+         }
+
+
+    })*/
+    
+ /*   $("#custom-quote-text").on("keyup", function(){
+        if($("custom-quote-text").val()!=''){
+        	if(updatePressed){
+        	$("#update-custom-quote").removeAttr("disabled")
+        	}
+        	$("#submit-custom-quote").removeAttr("disabled")
+        }
+        else{
+        	$("#update-custom-quote").attr("disabled", true)
+        	$("#submit-custom-quote").attr("disabled", true)
+        }
+        
+    })*/
+    
+    
+    
+    
+    
+    
+    
     $("#change-view-btn").click(function(){
         changeView();
     })
@@ -608,14 +708,19 @@
         var query = "https://api.icndb.com/jokes/"+apiType+apiLimit+creds;
         return query;
     }
-	$('#submit-custom-quote').click(function(){
-		var quote = $('#custom-quote-text').val();
+	    $('#submit-custom-quote').click(function(){
+	    
+		var quoteText = $('#custom-quote-text').val();
 		var imgPath = generateCustomImagePath();
-		addQuote(imgPath,quote,false,true)
-
+		addQuote(imgPath,quoteText,false,true)
+		var filter = $('input[name="filter"]:checked').val();
+		if(filter){
+			clearAllQuotes();
+			fetchData(filter);
+		}
 		
+		})
 		
-	})
 	function addQuote(imgPath,quote,saved,custom){
 		if (quote.length>0){
 			$.ajax({
