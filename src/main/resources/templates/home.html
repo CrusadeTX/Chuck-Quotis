@@ -583,10 +583,15 @@
 				addQuote(imgPath,text,saved,custom);
 				//$('#quote-card-'+i).find('.btn-success').attr("disabled", true);
 				$('#quote-card-'+i).find('.btn-act').html("Remove");
+				$('#quote-card-'+i).find('.btn-act').addClass("btn-danger");
+				$('#quote-card-'+i).find('.btn-act').removeClass("btn-success");
+				
 				}
 				else{
 					deleteQuote(text);
-					$('#quote-card-'+i).find('.btn-act').html("Remove");
+					$('#quote-card-'+i).find('.btn-act').html("Save");
+    				$('#quote-card-'+i).find('.btn-act').addClass("btn-success");
+    				$('#quote-card-'+i).find('.btn-act').removeClass("btn-danger");
 				}
             	})
 				
