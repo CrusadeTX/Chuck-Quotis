@@ -188,13 +188,6 @@
                     </form>
                     </div>
                     </div>
-                    <div id="custom-quote-container" class="row bg-danger text-wrap text-center m-3 p-1 result-container">
-                        <div class="col">
-                            <i class="fas fa-quote-left text-white"></i>
-                            <span id="result-custom-quote" class="text-white"> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-                            <i class="fas fa-quote-right text-white"></i>
-                        </div>
-                    </div>
                 </div>
 
                 </div>
@@ -204,7 +197,7 @@
 
 
 
-        <div id="card-template" style="display: none;" class="card shadow m-2 card-quote">
+        <div id="card-template" style="display: none; height: fit-content;" class="card shadow m-2 card-quote">
             <img class="card-img-top img-full-size" src="" alt="Card image cap">
             <div class="card-body">
             <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
@@ -410,9 +403,90 @@
     function getRandomInt(max) {
         return 1+Math.floor(Math.random() * Math.floor(max));
       }
+	function fetchData(filter){
+    	switch(filter){
+    	case "all":
+			$.ajax({
+        		url: "/quote/all",
+        		method: "GET",
+        		success : function(response){
+					response.forEach(function(quote){
+						postQuote(quote);
+					})
+        		},
+        		fail : function(){
+        			alert("Quotes were not retrieved")
+        		}
+        	});	
+    		break;
+    	case "saved":
+    		$.ajax({
+        		url: "/quote/saved",
+        		method: "GET",
+        		success : function(response){
+					response.forEach(function(quote){
+						postQuote(quote);
+						console.log(response.length)
+					})
+        		},
+        		fail : function(){
+        			alert("Saved quotes were not retrieved")
+        		}
+        	});	
+    		break;
+    	case "custom":
+    		$.ajax({
+        		url: "/quote/custom",
+        		method: "GET",
+        		success : function(response){
+					response.forEach(function(quote){
+						postQuote(quote);
+					})
+        		},
+        		fail : function(){
+        			alert("Custom quotes were not retrieved")
+        		}
+        	});	
+    		break;
+    	}
+    }
+	function postQuote(quote){
+        var template = $('#card-template').clone();
+        template.attr('id', 'quote-card-'+quote.id);
+        template.find('span').text(quote.text);
+        var img = template.find('img');
+        img.attr("src",quote.iconPath);
+        img.show();
+       var button = template.find('.btn-act')
+       button.html("Remove");
+       button.addClass("btn-danger");
+       button.removeClass("btn-success");
+       button.on('click',function(){
+    	   			deleteQuoteById(quote.id,template);
+					
+        	})
+                template.find('.btn-primary').on('click',function(){
+                	
+					 window.location.href='quote/edit/'+quote.id;
+        	})
+        $('#quote-container').append(template);
+        template.show();
+        
+		
+	}
 
     $('input[name="limit"]').click(function(){
+      clearAllQuotes();
+      showChangeViewButton();
       doApiRequest("")
+    })
+    $('input[name="filter"]').click(function(){
+    	alert("clicked")
+    	clearAllQuotes();
+        showChangeViewButton();
+      var filter = $('input[name="filter"]:checked').val();
+    	console.log(filter);
+      fetchData(filter);
     })
     $("#submit-random-quote").click(function(){
         doApiRequest("random")
@@ -599,6 +673,26 @@
 		}
 		 
 	 }
+	function deleteQuoteById(id, template){
+		 $.ajax({
+	        	url: "/quote/deletebyId",
+	        	method: "DELETE",
+	        	data: {id : id},
+	        	complete: function(data){
+	        		if(data.status==200){
+	        			alert("Delete Successful")
+	        			template.remove();
+	        		}
+	        		if(data.status==401){
+	        			alert("Delete Failed!!! You cant delete other people's quotes")
+	        		}
+	        		if(data.status==404){
+	        			alert("Delete Failed!!! No such comment exists")
+	        		}
+	        		}
+	        	})
+	}
+	
 		function deleteQuote(text){
 			 $.ajax({
 		        	url: "/quote/delete",

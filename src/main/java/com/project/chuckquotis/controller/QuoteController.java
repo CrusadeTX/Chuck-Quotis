@@ -107,29 +107,29 @@ public class QuoteController {
 		}
 		return result;
 	}
-//	@DeleteMapping(path="/quote/delete")
-//	public ResponseEntity<Boolean> deleteQuote(@RequestParam(value="id")int id,@AuthenticationPrincipal UserPrincipal principal ){
-//		UserBean user = principal.getLoggedInUser();
-//		if(user==null) {
-//			return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
-//		}
-//		Optional<QuoteBean> optionalQuote = quoteRepo.findById(id);
-//		if(optionalQuote.isPresent()) {
-//			QuoteBean quote = optionalQuote.get(); 
-//			if(quote.getUser().getId()==user.getId()) {
-//				quoteRepo.delete(quote);
-//			}
-//			else {
-//				return new ResponseEntity<>(false, HttpStatus.I_AM_A_TEAPOT);
-//			}
-//			return new ResponseEntity<>(true, HttpStatus.OK);
-//		}
-//		else {
-//			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-//		}
-//		
-//		
-//	}
+	@DeleteMapping(path="/quote/deletebyId")
+	public ResponseEntity<Boolean> deleteQuoteById(@RequestParam(value="id")int id,@AuthenticationPrincipal UserPrincipal principal ){
+		UserBean user = principal.getLoggedInUser();
+		if(user==null) {
+			return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+		}
+		Optional<QuoteBean> optionalQuote = quoteRepo.findById(id);
+		if(optionalQuote.isPresent()) {
+			QuoteBean quote = optionalQuote.get(); 
+			if(quote.getUser().getId()==user.getId()) {
+				quoteRepo.delete(quote);
+			}
+			else {
+			return new ResponseEntity<>(false, HttpStatus.I_AM_A_TEAPOT);
+			}
+    		return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		else {
+    		return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+		}
+		
+		
+	}
 }
 
 
