@@ -57,7 +57,9 @@ public class QuoteController {
 		//List<QuoteBean> Quotes = quoteRepo.findAll();
 		if(user != null) {
 			QuoteBean quoteBean = quoteRepo.getOne(id);
+			if(iconPath!="") {
 			quoteBean.setIconPath(iconPath);
+			}
 			quoteBean.setText(text);
 			quoteBean.setSaved(isSaved);
 			//quoteBean.setUser(user);

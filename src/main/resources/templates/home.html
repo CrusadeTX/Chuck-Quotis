@@ -175,6 +175,7 @@
                         <div class="col">
                             <h3 id="create-update-quote" class="text-center text-danger">Custom Quote</h3>
                     <form class="">
+                        <input type="hidden" id="custom-quote-id" name="custId">
                         <div class="form-group">
                             <label for="custom-quote-text" class="text-danger">Quote Text:</label>
                             <div class="input-group">
@@ -428,6 +429,7 @@
         		url: "/quote/saved",
         		method: "GET",
         		success : function(response){
+
 					response.forEach(function(quote){
 						postQuote(quote);
 						console.log(response.length)
@@ -482,24 +484,24 @@
          $('#custom-quote-text').val(quote.text);
        //$('#submit-custom-quote').html("Update Quote")
        //$('#submit-custom-quote').attr("id","update-custom-quote")
-         $('#update-custom-quote').on('click',function(){
-         quote.text = $('#custom-quote-text').val();
-            if(initialText !== quote.text){
-               quote.isSaved = false;
-               quote.isCustom = true;
-               alert(quote.id)
-               //updateQuote(quote);
-       		alert("quote to be sent" + quote.id)
-    		if (quote.text.length>0){
+       $('#custom-quote-id').val(quote.id);
+
+        	})
+        $('#quote-container').append(template);
+        template.show();
+	}
+    $('#update-custom-quote').on('click',function(){
+    
+    		if ($('#custom-quote-text').val().length>0){
     			$.ajax({
             		url: "/quote/update",
             		method: "POST",
             		data : {
-            			id   : quote.id,
-            			icon : quote.iconPath,
-            			text : quote.text,
-            			saved : quote.isSaved,
-            			custom : quote.isCustom
+            			id   : $('#custom-quote-id').val(),
+                        icon: "",
+            			text : $('#custom-quote-text').val(),
+            			saved : false,
+            			custom : true
             		},
             		success : function(response){
             			if(response.includes("Error")){
@@ -525,20 +527,16 @@
             	})
     		}
                
-                }
+                
              else{
                  alert("You havent made any changes!");
                 }
                 		
                })
-        	})
-        $('#quote-container').append(template);
-        template.show();
-		}
         
-		
+    
 
-
+    
     $('input[name="limit"]').click(function(){
     $('input[name="filter"]').prop("checked", false);
       clearAllQuotes();
