@@ -64,9 +64,9 @@ public class UserController {
 		boolean emailExists = false;
 		if(password.equals(repeatPassword)) {
 			//UserBean user = loggedUser;
-			user.setEmail(email);
+			user.setEmail(email.trim().toLowerCase());
 			user.setPassword(passwordEncoder.encode(password));
-			user.setUsername(username);
+			user.setUsername(username.trim().toLowerCase());
 			//Set<RoleBean> roles = new HashSet<RoleBean>();
 			//RoleBean foundRole = roleRepo.findRoleByCode("ROLE_USER");
 			//if(foundRole == null) {
@@ -80,10 +80,10 @@ public class UserController {
 			//user.setRoles(roles);
 			foundUsers = userRepo.findAll();
 			for(UserBean foundUser : foundUsers) {
-				if(foundUser.getUsername().equals(username) && foundUser.getId()!=id) {
+				if(foundUser.getUsername().equals(username.trim().toLowerCase()) && foundUser.getId()!=id) {
 					usernameExists = true;
 				}
-				if(foundUser.getEmail().equals(email) && foundUser.getId()!=id) {
+				if(foundUser.getEmail().equals(email.trim().toLowerCase()) && foundUser.getId()!=id) {
 					emailExists = true;
 				}
 			}

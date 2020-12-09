@@ -36,7 +36,7 @@ public class QuoteController {
 		if(user != null) {
 			QuoteBean quoteBean = new QuoteBean();
 			quoteBean.setIconPath(iconPath);
-			quoteBean.setText(text);
+			quoteBean.setText(text.trim());
 			quoteBean.setSaved(isSaved);
 			quoteBean.setUser(user);
 			quoteBean.setCustom(isCustom);
@@ -60,11 +60,16 @@ public class QuoteController {
 			if(iconPath!="") {
 			quoteBean.setIconPath(iconPath);
 			}
-			quoteBean.setText(text);
+			quoteBean.setText(text.trim());
 			quoteBean.setSaved(isSaved);
 			//quoteBean.setUser(user);
 			quoteBean.setCustom(isCustom);
+			if(quoteBean.getUser().getId() == user.getId()) {
 			quoteBean = quoteRepo.saveAndFlush(quoteBean);
+			}
+			else {
+				return "Error: You cant update other people's quotes";
+			}
 			if(quoteBean != null) {
 				return String.valueOf(quoteBean.getId());
 			}
@@ -82,6 +87,7 @@ public class QuoteController {
 	@GetMapping(path="/quote/alluserquotes")
 	public List<QuoteBean> getAllUserQuotes( @AuthenticationPrincipal UserPrincipal principal){
 		UserBean user = principal.getLoggedInUser();
+		if (user!=null) {
 		List<QuoteBean> retrievedQuotes = quoteRepo.findAll();
 		List<QuoteBean> result = new ArrayList<QuoteBean>();
 		for(QuoteBean quote : retrievedQuotes) {
@@ -90,6 +96,8 @@ public class QuoteController {
 			}
 		}
 		return result;
+		}
+		return null;
 		
 	}
 	
@@ -110,7 +118,7 @@ public class QuoteController {
 	@DeleteMapping(path="/quote/delete")
 	public ResponseEntity<Boolean> delete(@RequestParam(value="text")String text, @AuthenticationPrincipal UserPrincipal principal) {
 		UserBean user = principal.getLoggedInUser();
-		List<QuoteBean> foundQuotes = quoteRepo.findByText(text);
+		List<QuoteBean> foundQuotes = quoteRepo.findByText(text.trim());
 		for(QuoteBean quote : foundQuotes) {
 			if(quote.getUser().getId() == user.getId()) {
 				quoteRepo.delete(quote);
