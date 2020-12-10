@@ -34,6 +34,16 @@ public class QuoteController {
 	public String addQuote(@RequestParam(value="icon")String iconPath, @RequestParam(value="text")String text,@RequestParam(value="saved") boolean isSaved, @RequestParam(value="custom")boolean isCustom,@AuthenticationPrincipal UserPrincipal principal ) {
 		UserBean user = principal.getLoggedInUser();
 		if(user != null) {
+			List<QuoteBean> retrievedQuotes = quoteRepo.findAll();
+			//List<QuoteBean> result = new ArrayList<QuoteBean>();
+			for(QuoteBean quote : retrievedQuotes) {
+				if(quote.getUser().getId() == user.getId()) {
+					if(text.trim().equals(quote.getText())) {
+						return "Error: You already have this quote!";
+					
+					}
+				}
+			}
 			QuoteBean quoteBean = new QuoteBean();
 			quoteBean.setIconPath(iconPath);
 			quoteBean.setText(text.trim());
@@ -169,7 +179,7 @@ public class QuoteController {
 				quoteRepo.delete(quote);
 			}
 			else {
-			return new ResponseEntity<>(false, HttpStatus.I_AM_A_TEAPOT);
+			return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
 			}
     		return new ResponseEntity<>(true, HttpStatus.OK);
 		}

@@ -1,5 +1,6 @@
 package com.project.chuckquotis.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,19 +32,42 @@ private UserRepo userRepo;
 		this.userRepo = userRepo;
 	}
    @GetMapping(path="/post/all")
-	public List<PostBean> getAllPosts(){
+	public List<PostBean> getAllPosts(@AuthenticationPrincipal UserPrincipal principal){
+		UserBean user = principal.getLoggedInUser();
+		if(user!=null) {
 		return postRepo.findAll();
+		}
+		else {
+			return null;
+		}
 		
 	}
+	@GetMapping(path="/post/personal")
+	public List<PostBean> getPersonalPosts(@AuthenticationPrincipal UserPrincipal principal){
+		UserBean user = principal.getLoggedInUser();
+		if(user!=null) {
+		List<PostBean> retrievedPosts = postRepo.findAll();
+		List<PostBean> result = new ArrayList<PostBean>();
+		for(PostBean post : retrievedPosts) {
+			if(post.getUser().getId() == user.getId()) {
+				result.add(post);
+			}
+		}
+		return result;
+		}
+		else {
+			return null;
+		}
+	}
 	@PostMapping(path="/post/update")
-	public String postQuote(@RequestParam(value="postId")int postId,@RequestParam(value="quoteId")int quoteId,@RequestParam(value="comment")String comment,@AuthenticationPrincipal UserPrincipal principal ) {
+	public String postQuote(@RequestParam(value="postId")int postId,/*@RequestParam(value="quoteId")int quoteId,*/@RequestParam(value="comment")String comment,@AuthenticationPrincipal UserPrincipal principal ) {
 		UserBean user = principal.getLoggedInUser();
 		if(user != null) {
 			PostBean postBean = postRepo.getOne(postId);
 			if(postBean.getUser().getId() == user.getId()) {
-			QuoteBean quote = quoteRepo.getOne(quoteId);
+			//QuoteBean quote = quoteRepo.getOne(quoteId);
 			postBean.setText(comment.trim());
-			postBean.setQuote(quote);
+			//postBean.setQuote(quote);
 			postBean = postRepo.saveAndFlush(postBean);
 			}
 			else {
@@ -62,7 +86,7 @@ private UserRepo userRepo;
 	public String addQuote(@RequestParam(value="comment")String comment, @RequestParam(value="quoteId")int quoteId,@AuthenticationPrincipal UserPrincipal principal ) {
 		UserBean user = principal.getLoggedInUser();
 		if(user != null) {
-			if(comment!=null && comment!="") {
+			if(comment!=null && comment!="" && quoteId!=0) {
 			PostBean postBean = new PostBean();
 			QuoteBean quote = quoteRepo.getOne(quoteId);
 			postBean.setQuote(quote);
@@ -76,7 +100,7 @@ private UserRepo userRepo;
 			return "Error: insert unsuccessful";
 		}
 			else {
-				return "Error: Comment cannot be empty!";
+				return "Error: Not all fields were filled!";
 			}
 		}
 		else {
@@ -96,7 +120,7 @@ private UserRepo userRepo;
 				postRepo.delete(post);
 			}
 			else {
-			return new ResponseEntity<>(false, HttpStatus.I_AM_A_TEAPOT);
+			return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
 			}
     		return new ResponseEntity<>(true, HttpStatus.OK);
 		}

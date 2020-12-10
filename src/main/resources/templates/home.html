@@ -409,7 +409,8 @@
     function getRandomInt(max) {
         return 1+Math.floor(Math.random() * Math.floor(max));
       }
-	function fetchData(filter){
+	function fetchData(){
+		var filter = $('input[name="filter"]:checked').val();
     	switch(filter){
     	case "all":
 			$.ajax({
@@ -469,7 +470,7 @@
        button.addClass("btn-danger");
        button.removeClass("btn-success");
        button.on('click',function(){
-    	   alert(quote.id)
+    	   //alert(quote.id)
     	   			deleteQuoteById(quote.id,template);
     	   			
 					
@@ -479,9 +480,9 @@
              $('#update-custom-quote').removeAttr("disabled")
              $('#submit-custom-quote').attr("disabled", true)
              updatePressed =true
-    	 alert("i am clicked")
+    	 //alert("i am clicked")
        //$('#create-update-quote').text("Edit Quote:");
-    	 alert(quote.id)
+    	// alert(quote.id)
          $('#custom-quote-text').val(quote.text);
        //$('#submit-custom-quote').html("Update Quote")
        //$('#submit-custom-quote').attr("id","update-custom-quote")
@@ -507,7 +508,7 @@
             		success : function(response){
             			if(response.includes("Error")){
             				//$('#result-custom-quote').text(response)
-            				alert(response)
+            				alert(response);
             			}
             			else{
                     		//$('#update-custom-quote').attr("id","submit-custom-quote")
@@ -515,22 +516,24 @@
                     		//$('#create-update-quote').text("Create Quote:");
                     		$('#custom-quote-text').val('');
                     		updatePressed = false;
-                    		$('#update-custom-quote').attr("disabled", true)
-                    		$('#submit-custom-quote').removeAttr("disabled")
+                    		$('#update-custom-quote').attr("disabled", true);
+                    		$('#submit-custom-quote').removeAttr("disabled");
+                    		clearAllQuotes();
+                    		fetchData();
             				//$('#result-custom-quote').text("Quote has been created successfully")
             				alert("Quote has been updated successfully")
             			}
             		},
             		fail : function(){
             			
-            			alert("Something went terribly wrong!!!")
+            			alert("Something went terribly wrong!!!");
             		}
             	})
     		}
                
                 
              else{
-                 alert("You havent made any changes!");
+                 alert("Quote is empty!");
                 }
                 		
                })
@@ -549,9 +552,9 @@
     	//alert("clicked")
     	clearAllQuotes();
         showChangeViewButton();
-      var filter = $('input[name="filter"]:checked').val();
-    	console.log(filter);
-      fetchData(filter);
+      //var filter = $('input[name="filter"]:checked').val();
+    	//console.log(filter);
+      fetchData();
     })
     $("#submit-random-quote").click(function(){
         doApiRequest("random")
@@ -711,11 +714,11 @@
 		var quoteText = $('#custom-quote-text').val();
 		var imgPath = generateCustomImagePath();
 		addQuote(imgPath,quoteText,false,true)
-		var filter = $('input[name="filter"]:checked').val();
-		if(filter){
-			clearAllQuotes();
-			fetchData(filter);
-		}
+		//var filter = $('input[name="filter"]:checked').val();
+		//if(filter){
+			//clearAllQuotes();
+			//fetchData();
+		//}
 		
 		})
 		
@@ -739,6 +742,8 @@
         				
         				//$('#result-custom-quote').text("Quote has been created successfully")
         				alert("Quote has been created successfully")
+        				clearAllQuotes();
+        				fetchData();
         			}
         		},
         		fail : function(){

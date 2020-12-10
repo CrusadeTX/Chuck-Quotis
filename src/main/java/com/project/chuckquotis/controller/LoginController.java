@@ -53,7 +53,7 @@ public class LoginController {
 		 boolean usernameExists = false;
 		 boolean emailExists = false;
 		if(password.equals(repeatPassword)) {
-			UserBean user = new UserBean(username.trim().toLowerCase(),passwordEncoder.encode(password),email.trim().toLowerCase());
+			UserBean user = new UserBean(username.trim(),passwordEncoder.encode(password),email.trim().toLowerCase());
 			Set<RoleBean> roles = new HashSet<RoleBean>();
 			RoleBean foundRole = roleRepo.findRoleByCode("ROLE_USER");
 			if(foundRole == null) {
@@ -67,7 +67,7 @@ public class LoginController {
 			user.setRoles(roles);
 			foundUsers = userRepo.findAll();
 			for(UserBean foundUser : foundUsers) {
-				if(foundUser.getUsername().equals(username.trim().toLowerCase())) {
+				if(foundUser.getUsername().equals(username.trim())) {
 					usernameExists = true;
 				}
 				if(foundUser.getEmail().equals(email.trim().toLowerCase())) {
