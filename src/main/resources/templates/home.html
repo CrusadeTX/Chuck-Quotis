@@ -21,7 +21,7 @@
             </div> 
         </div>
         <div class="row bg-danger justify-content-center" sec:authorize="isAuthenticated()">
- 			Authenticated as <span sec:authentication="name"></span>
+ 			<span class="bg-white text-danger rounded text-white px-2 py-1 m-2" sec:authentication="name"></span>
             <a class="nav-item nav-link active text-white" href="/home">Home</a>
             <a class="nav-item nav-link text-white" href="profile.html">Profile</a>
             <a class="nav-item nav-link text-white" href="quote.html">Quotes</a>
@@ -228,6 +228,7 @@
     $(document).ready(function(){
     $("#random-quote-container").hide();
     $("#personalised-quote-container").hide();
+    $('input[name="filter"]').prop("checked", false);
 
         function doApiRequest(type){       
             $.ajax({
@@ -742,8 +743,15 @@
         				
         				//$('#result-custom-quote').text("Quote has been created successfully")
         				alert("Quote has been created successfully")
-        				clearAllQuotes();
-        				fetchData();
+        				
+        					clearAllQuotes();
+        					fetchData();
+        					doApiRequest("");
+        					
+        				
+        				//if($('input[name="limit"]:checked')){
+        				//doApiRequest("");
+        				//}
         			}
         		},
         		fail : function(){

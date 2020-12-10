@@ -2,6 +2,7 @@ package com.project.chuckquotis.bean;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +32,7 @@ public class QuoteBean {
 	private boolean isSaved;
 	@Column(name="custom", nullable=false)
 	private boolean isCustom;
-	@OneToMany(mappedBy="quote", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="quote", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<PostBean> posts;
     @ManyToOne
     @JoinColumn(name="user_id")

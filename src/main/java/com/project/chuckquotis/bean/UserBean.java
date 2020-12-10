@@ -31,11 +31,11 @@ public class UserBean {
 	private String password;
 	@Column(name="email", nullable=false, unique=true, length=256)
 	private String email;
-    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<PostBean> posts;
    // @ManyToMany( fetch = FetchType.EAGER)
    // @JoinTable(name="user_quote", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="quote_id"))
-    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<QuoteBean> quotes;
     @ManyToMany( fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(name="account_role",

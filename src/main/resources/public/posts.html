@@ -265,7 +265,7 @@
 		}
 			
 		function addPost(quoteId,comment){
-			if (comment.length>0){
+			if (comment.length>0 && quoteId>0){
 				$.ajax({
 	        		url: "/post/add",
 	        		method: "POST",
@@ -293,6 +293,9 @@
 	        		}
 	        	})
 			}
+			else{
+				alert("Please fill all fields");
+			}
 			
 		}
 
@@ -302,8 +305,11 @@ $('#update-post').on('click',function(){
 $('#submit-post').on('click',function(){
 	var quoteId = $("#select-quote option:selected").val();
 	var comment = $("#input-comment").val();
-	if(comment!=""){
+	if(comment!=""&&quoteId>0){
 		addPost(quoteId, comment)
+	}
+	else{
+		alert("Please fill all fields")
 	}
 })
 function clearFields(){
