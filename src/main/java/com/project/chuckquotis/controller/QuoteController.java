@@ -70,12 +70,20 @@ public class QuoteController {
 			if(iconPath!="") {
 			quoteBean.setIconPath(iconPath);
 			}
-			quoteBean.setText(text.trim());
-			quoteBean.setSaved(isSaved);
+
 			//quoteBean.setUser(user);
-			quoteBean.setCustom(isCustom);
+
 			if(quoteBean.getUser().getId() == user.getId()) {
+				if(quoteBean.getText().equals(text.trim()))
+				{
+					return "Error: You already have this quote!";
+				}
+				else {
+					quoteBean.setText(text.trim());
+					quoteBean.setSaved(isSaved);
+					quoteBean.setCustom(isCustom);
 			quoteBean = quoteRepo.saveAndFlush(quoteBean);
+				}
 			}
 			else {
 				return "Error: You cant update other people's quotes";

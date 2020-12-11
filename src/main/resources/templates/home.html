@@ -58,16 +58,16 @@
             </div>
             <form class="d-flex align-items-center">
                 <div class="custom-control custom-radio mx-2">
-                    <input type="radio" id="customRadio4" name="filter" value="custom" class="custom-control-input">
-                    <label class="custom-control-label text-danger h6" for="customRadio4">Custom</label>
+                    <input type="radio" id="filter-custom" name="filter" value="custom" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="filter-custom">Custom</label>
                   </div>
                   <div class="custom-control custom-radio mx-2">
-                    <input type="radio" id="customRadio5" name="filter" value="saved"class="custom-control-input">
-                    <label class="custom-control-label text-danger h6" for="customRadio5">Saved</label>
+                    <input type="radio" id="filter-saved" name="filter" value="saved"class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="filter-saved">Saved</label>
                   </div>
                   <div class="custom-control custom-radio mx-2">
-                    <input type="radio" id="customRadio6" name="filter" value="all" class="custom-control-input">
-                    <label class="custom-control-label text-danger h6" for="customRadio6">All</label>
+                    <input type="radio" id="filter-all" name="filter" value="all" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="filter-all">All</label>
                   </div>
             </form>
             
@@ -519,8 +519,10 @@
                     		updatePressed = false;
                     		$('#update-custom-quote').attr("disabled", true);
                     		$('#submit-custom-quote').removeAttr("disabled");
+                    		if(document.getElementById('filter-custom').checked||document.getElementById('filter-all').checked|| document.getElementById('filter-saved').checked ){
                     		clearAllQuotes();
                     		fetchData();
+                    		}
             				//$('#result-custom-quote').text("Quote has been created successfully")
             				alert("Quote has been updated successfully")
             			}
@@ -743,10 +745,14 @@
         				
         				//$('#result-custom-quote').text("Quote has been created successfully")
         				alert("Quote has been created successfully")
-        				
+        				if(document.getElementById('filter-custom').checked||document.getElementById('filter-all').checked|| document.getElementById('filter-saved').checked ){
+        					document.getElementById('filter-custom').checked
         					clearAllQuotes();
         					fetchData();
-        					doApiRequest("");
+        					//doApiRequest("");
+        					$('#custom-quote-text').val('');
+        					$('#custom-quote-text').text('');
+        				  }
         					
         				
         				//if($('input[name="limit"]:checked')){

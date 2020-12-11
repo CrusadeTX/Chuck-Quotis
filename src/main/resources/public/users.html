@@ -178,14 +178,14 @@ $(document).ready(function(){
         template.find('#email-text').text(user.email);
         $('#update-post').removeAttr("disabled")
         //alert(post.text)
-       var button = template.find('.btn-act')
-       button.html("Remove");
-       button.on('click',function(){
+       var button = template.find('.btn-act').remove();
+       //button.html("Remove");
+       //button.on('click',function(){
     	   
-    	   			deleteUserById(user.id,template);
+    	   			//deleteUserById(user.id,template);
     	   			
 					
-        	})
+        ///})
          template.find('.btn-primary').on('click',function(){
              $('#update-user').removeAttr("disabled")
              $('#update-user').show();
