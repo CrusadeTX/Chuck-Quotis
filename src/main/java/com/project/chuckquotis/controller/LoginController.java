@@ -61,6 +61,9 @@ public class LoginController {
 				RoleBean role = new RoleBean();
 				role.setCode("ROLE_USER");
 				roles.add(role);
+				RoleBean role2 = new RoleBean();
+				role2.setCode("ROLE_ADMIN");
+				roles.add(role2);
 			}
 			else {
 				roles.add(foundRole);
