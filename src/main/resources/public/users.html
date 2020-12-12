@@ -73,7 +73,7 @@
                 <input type="hidden" id="user-id" name="User-current">
                 <button id="submit-user" type="button" class="btn btn-success">Add</button>
                 <button id="update-user" type="button" class="btn btn-primary">Update</button>
-                <button id="back" class="btn btn-danger" type="button">Back</button>
+               <!--  <button id="back" class="btn btn-danger" type="button">Back</button>-->
                 </div>
             </form>
             </div>
@@ -223,16 +223,16 @@ $(document).ready(function(){
         		},
         		success : function(response){
         			if(response.includes("Error")){
-        				//$('#result-custom-quote').text(response)
         				alert(response)
         			}
         			else{
         				
-        				//$('#result-custom-quote').text("Quote has been created successfully")
+        				
         				alert("User has been created successfully")
         				fetchAllUsers();
         				clearFields();
-        				//clearUsers();
+        				$('#register-username').text('');
+        			
         				
         			}
         		},
@@ -259,12 +259,34 @@ var email = $('#register-email').val();
 var password = $('#register-pass').val();
 var repeatPassword = $('#confirm-register-pass').val();
 
-if (username!='' && email!='' && password!='' && repeatPassword!=''){
-	addUser(email,username,password,repeatPassword);
+
+if(username==="" || email==="" || password ==="" || repeatPassword==="")
+{
+	alert("Please fill in the requested fields");
+	return
+	
 }
-else{
-	alert("Please fill all fields")
+if(!email.includes('@') || !email.includes('.')){
+	alert("Email is not valid");
+	return
 }
+if(password != repeatPassword){
+	alert("Password must be confirmed");
+	return
+}
+
+addUser(email,username,password,repeatPassword);
+
+
+
+
+
+//if (username!='' && email!='' && password!='' && repeatPassword!=''){
+	//addUser(email,username,password,repeatPassword);
+//}
+//else{
+//	alert("Please fill all fields")
+//}
 })
 function clearFields(){
 $('#register-username').val('');
@@ -333,7 +355,21 @@ function updateUser(){
 	var email = $('#register-email').val();
 	var password = $('#register-pass').val();
 	var repeatPassword = $('#confirm-register-pass').val();
-	if (username!='' && email!='' && password!='' && repeatPassword!=''){
+	if(username==="" || email==="" || password ==="" || repeatPassword==="")
+	{
+		alert("Please fill in the requested fields");
+		return
+		
+	}
+	if(!email.includes('@') || !email.includes('.')){
+		alert("Email is not valid");
+		return
+	}
+	if(password != repeatPassword){
+		alert("Password must be confirmed");
+		return
+	}
+	
 	$.ajax({
 		url: "/user/update/admin",
 		method: "POST",
@@ -368,12 +404,6 @@ function updateUser(){
 			alert("Something went terribly wrong!!!")
 		}
 	})
-}
-   
-    
- else{
-     alert("Please fill in all fields");
-    }
 }
 
 

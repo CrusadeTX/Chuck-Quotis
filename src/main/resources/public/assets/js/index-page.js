@@ -1,3 +1,4 @@
+$(document).ready(function(){
 var hasUsername = false;
 var hasPassword = false;
 
@@ -85,13 +86,14 @@ $("#log-in-password").on("keyup", function(){
     	hasPassword =false;
     }
     if(hasUsername && hasPassword){
-        $("#submit-personalised-quote").removeAttr("disabled")
+        $("#login").removeAttr("disabled")
     }
     else{
-        $("#submit-personalised-quote").attr("disabled", true)
+        $("#login").attr("disabled", true)
     }
 
 })
+
 
 
 

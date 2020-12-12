@@ -42,31 +42,22 @@
                     <label for="register-user" class="text-danger">Username:</label>
                     <input type="text" class="form-control" id="register-user" name="username" required placeholder="">
                 </div>
-                     <div id="username-error">
-                	<span class="text-warning text-center">Username is empty!</span>
-                	</div>
+
                 <div class="form-group">
                     <label for="register-email" class="text-danger">Email:</label>
                     <input type="email" class="form-control" id="register-email" name="email" required placeholder="">
                 </div>
-                    <div id="email-error">
-                	<span class="text-warning text-center">Email is empty</span>
-                	</div>
+  
                 <div class="form-group">
                     <label for="register-pass" class="text-danger">Password:</label>
                     <input type="password" class="form-control" id="register-pass" name="password" required placeholder="">
                 </div>
-                <div id="password-error">
-                	<span class="text-warning text-center">Password is empty!</span>
-                	</div>
+
                 <div class="form-group">
                     <label for="confirm-register-pass" class="text-danger">Repeat Password:</label>
                     <input type="password" class="form-control" id="confirm-register-pass" name="repeatPassword" required placeholder="">
 
                 </div>
-                <div id="repeat-password-error">
-                	<span class="text-warning text-center">Repeat password is empty!</span>
-                	</div>
                 <div class="text-center">
                 <input type="hidden" name="action" value="register">
                 <button id="user-submit" type="button" class="btn btn-success">Submit Changes</button>
@@ -112,7 +103,21 @@
                 var password = $('#register-pass').val().trim();
                 var repeatPassword = $('#confirm-register-pass').val().trim();
                 var email = $('#register-email').val().trim();
-                if(username!="" && password!="" && repeatPassword!="" && email!=""){  
+                if(username==="" || email==="" || password ==="" || repeatPassword==="")
+                {
+                	alert("Please fill in the requested fields");
+                	return
+                	
+                }
+                if(!email.includes('@') || !email.includes('.')){
+                	alert("Email is not valid");
+                	return
+                }
+                if(password != repeatPassword){
+                	alert("Password must be confirmed");
+                	return
+                }
+                
                 $.ajax({
     			url: "/user/update",
     			method: "POST",
@@ -126,10 +131,10 @@
     			success: function (data){
                     data.forEach(element => {
                         alert(element);
-                        $('#username-error').hide();
-                        $('#password-error').hide();
-                        $('#repeat-password-error').hide();
-                        $('#email-error').hide();
+                       // $('#username-error').hide();
+                        //$('#password-error').hide();
+                        //$('#repeat-password-error').hide();
+                        //$('#email-error').hide();
                     }
 
                     );
@@ -138,21 +143,8 @@
     				alert("Something went wrong")
     			}
     		})
-        }
-            else{
-                if(username==""){
-                $('#username-error').show();
-                }
-                if(password==""){
-                $('#password-error').show();
-                }
-                if(repeatPassword==""){
-                $('#repeat-password-error').show();
-                }
-                if(email==""){
-                $('#email-error').show();
-                }
-            }
+        
+           
 
             })
          

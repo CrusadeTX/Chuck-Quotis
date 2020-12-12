@@ -103,10 +103,10 @@ public class UserController {
 			}
 			if(usernameExists || emailExists) {
 				if(usernameExists) {
-					result.add("Error: Username exists!");
+					result.add("Error Username exists!");
 				}
 				if(emailExists) {
-					result.add("Error: Email exists!");
+					result.add("Error Email exists!");
 				}
 				return result;
 				
@@ -123,7 +123,7 @@ public class UserController {
 			
 		}
 		else {
-			result.add("Error: Password mismatch!");
+			result.add("Error Password mismatch!");
 			return result;
 		}
 		
@@ -131,7 +131,7 @@ public class UserController {
 		
 	}
 		else {
-			result.add("Error: Unauthorized!");
+			result.add("Error Unauthorized!");
 			return result;
 		}
 		
