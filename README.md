@@ -2,8 +2,7 @@
 
 
 <h4>Short Description</h4>
-<p>Chuck Quotis is a html/css/js project whose main goal is to generate and visualise in a suitable way various Chuck Norris one liners and quotes. The projects uses AJAX calls to
-an external API Service to receive the desired quotes.</p>
+<p>Chuck Quotis is a web application that allows users to browse and save lots of pre-existing Chuck Norris jokes provided by the following service: https://api.chucknorris.io/ .Users can also generate personal quotes and edit existing ones. The application incorporates a log-in and registration service, two different kinds of user roles - User and Administrator, and a simple posting and commenting feature. The application uses a REST based architecture. The front end layout uses Bootstrap, while all of the API calls and dynamic content generation mechanisms use a blend of JavaScript, JQuery and AJAX for the API calls. The back end of the project uses Java and Spring boot (with Spring Security configured). The persistence layer uses an ORM - Hibernate and H2 as a lightweight database solution.</p>
 <h4>Implemented features:</h4>
 <ol>
 <li>Retrieve and visualise the set of quotes from the API Database</li>
