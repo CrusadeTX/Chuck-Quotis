@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+        <title>Chuck Quotis</title>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <script src="assets/js/jquery/jquery-3.5.1.js"></script>
+        <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        --><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/styles/style.css">
+   <!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">-->
+
+</head>
+<body>
+<div class="container-lg container-fluid ">
+    <div class="row bg-danger shadow py-4">
+    <div class="col text-white">
+        <h1 class="text-center mb-0">Chuck Quotis</h1>
+        <div class="text-center">
+            <span>The ultimate Chuck Norris Quotes collection</span>
+        </div> 
+    </div> 
+</div>
+<div class="row bg-danger justify-content-center">
+    <a class="nav-item nav-link active text-white" href="/home">Home</a>
+    <a class="nav-item nav-link text-white" href="profile.html">Profile</a>
+    <a class="nav-item nav-link text-white" href="users.html">Users</a>
+    <a class="nav-item nav-link text-white" href="posts.html">Posts</a>
+    <a class="nav-item nav-link text-white" href="/login?logout">Log Out</a>
+  </div>
+          <div class="row mt-3 shadow p-2">
+        <div class="d-flex align-items-center col-12 justify-content-center">
+            <div class="d-flex align-items-center">
+                <span class="text-danger h4">Filter: </span>
+            </div>
+            <form class="d-flex align-items-center">
+                <div class="custom-control custom-radio mx-2">
+                    <input type="radio" id="customRadio1" name="filter" value="personal" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio1">Personal</label>
+                  </div>
+                  <div class="custom-control custom-radio mx-2">
+                    <input type="radio" id="customRadio2" name="filter" value="all" class="custom-control-input">
+                    <label class="custom-control-label text-danger h6" for="customRadio2">All</label>
+                  </div>
+            </form>
+            
+        </div>
+        </div>
+  <div class="container">
+
+
+            <div class="row mt-4">
+
+                <div class="col-sm-4 ">
+
+                   
+                        <div class="panel-heading">
+                            <h3 class="text-center text-danger">Post</h3>
+                        </div>
+                         <div class="panel panel-default shadow p-3 m-2">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-center">
+                                            <span id="current-user-username" class="bg-danger rounded text-white px-2 py-1 my-2">Someone</span>
+                                        </div>
+                                        <label id="select-quote-label" for="select-quote">Quote:</label>
+                                        <select id="select-quote" class="form-control">
+                                            <option value="0" selected disabled>-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                   <div class="col-sm-12">
+                                       <label for="input-comment">Comment:</label>
+                                       <textarea class="form-control" rows="3" id="input-comment"></textarea>
+                                   </div>
+                                </div>
+								<input type="hidden" id="post-id" name="custId">
+                            </div>
+                        </div>
+                        <div class="panel-footer d-flex justify-content-around">
+                            <button id="submit-post" type="button" class="btn btn-success">Post</button>
+                            <button id="update-post" type="button" class="btn btn-primary ">Update</button>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="text-center text-danger">Posts:</h3>
+                        </div>
+						<div id="post-container" class="d-flex flex-wrap justify-content-center">
+						
+						</div>
+                        
+                    </div>
+
+                </div>
+            </div>
+
+<input type="hidden" id="current-user" name="User-current">
+        </div>
+
+</div>
+
+        <div id="card-template" style="display: none;" class="card shadow m-2 card-quote">
+            <img class="card-img-top img-full-size" src="assets/images/3.jpg" alt="Card image cap">
+            <div class="card-body">
+            <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
+          </div>
+            <div class="text-center">
+            <button class="btn btn-danger btn-act mb-3 mx-2" type="button">Remove</button>
+            <button class="btn btn-primary   mb-3 mx-2" type="button">Edit</button>
+            
+            </div>
+            <div class="d-flex border-top  align-items-center">
+            <div id="post-user-container">
+            <span id="post-username" class="bg-danger rounded text-white px-2 py-1 m-2">Someone</span>
+            </div>
+            <div id="comment-container">
+             <p class="comment-text"></p>
+            </div>
+        </div>
+        
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){  
+        getCurrentUser();
+        fetchUserQuotes();
+        fetchAllPosts();
+    	$('#update-post').attr("disabled",true);
+        function fetchUserQuotes(){
+           
+            $.ajax({
+    			url: "/quote/alluserquotes",
+    			method: "GET",
+    			success: function (response){
+                    if(response == null){
+                        alert("No logged in user")
+                        windows.location.href="/login?logout";
+                    }
+                    else{
+						for(i=0;i<response.length;i++){
+							(function(i){populateDropDown(response[i])})(i);
+                          }
+                    }
+    			},
+    			fail: function(){
+    				windows.location.href="/login?logout";
+    			}
+    		})
+    	
+
+        }
+
+        function populateDropDown(quote){
+            var dropDown = $('#select-quote');
+            dropDown.append('<option value=' + quote.id + '>' + quote.text + '</option>');
+        }
+		function fetchAllPosts(){
+			var filter = $('input[name="filter"]:checked').val()
+			if(filter!=="all" && filter!=="personal"){
+				filter="all";
+			}
+			if(filter==="all"){
+            $.ajax({
+    			url: "/post/all",
+    			method: "GET",
+    			success: function (response){
+                    if(response !== null){
+						for(i=0;i<response.length;i++){
+							(function(i){populatePostContainer(response[i],i)})(i);
+                          }
+                    }
+                    else{
+
+                    }
+    			},
+    			fail: function(){
+    				alert("Something went wrong!")
+    			}
+    		})
+		}
+			if(filter==="personal"){
+	            $.ajax({
+	    			url: "/post/personal",
+	    			method: "GET",
+	    			success: function (response){
+	                    if(response !== null){
+							for(i=0;i<response.length;i++){
+								(function(i){populatePostContainer(response[i],i)})(i);
+	                          }
+	                    }
+	                    else{
+
+	                    }
+	    			},
+	    			fail: function(){
+	    				alert("Something went wrong!")
+	    			}
+	    		})
+				
+			}
+			
+		}
+		
+		function populatePostContainer(post,i){
+			var template = $('#card-template').clone();
+	        template.attr('id', 'post-card-'+post.id);
+	        template.find('.card-text').text(post.quote.text);
+	        var img = template.find('img');
+	        img.attr("src",post.quote.iconPath);
+	        img.show();
+	        template.find('.comment-text').text(post.text);
+	        //alert(post.text)
+	        template.find('#post-username').text(post.user.username);
+	        console.log("Post.user.id"+post.user.id);
+	        console.log("currentuser"+$('#current-user').val());
+	        if(post.user.id == $('#current-user').val())
+	        	{
+	       var button = template.find('.btn-act')
+	       button.html("Remove");
+	       button.on('click',function(){
+	    	   
+	    	   			deletePostById(post.id,template);
+	    	   			
+						
+	        	})
+	       var initialText = post.text;
+	         template.find('.btn-primary').on('click',function(){
+	             $('#update-post').removeAttr("disabled")
+	             $('#submit-post').attr("disabled", true)
+	             $('#select-quote').attr("disabled",true)
+	             $('#select-quote').hide();
+	             $('#select-quote-label').hide();
+	             updatePressed =true
+	    	 
+	       //$('#create-update-quote').text("Edit Quote:");
+	         $('#post-id').val(post.id);
+	         $('#input-comment').val(post.text);
+	       //$('#submit-custom-quote').html("Update Quote")
+	       //$('#submit-custom-quote').attr("id","update-custom-quote")
+	       //$('#custom-quote-id').val(quote.id);
+
+	        	})
+	        }
+	        else{
+	        	template.find('.btn-act').remove();
+	        	template.find('.btn-primary').remove();
+	        }
+	        $('#post-container').append(template);
+	        template.show();
+		}
+			
+		function addPost(quoteId,comment){
+			if (comment.length>0 && quoteId>0){
+				$.ajax({
+	        		url: "/post/add",
+	        		method: "POST",
+	        		data : {
+	        			comment : comment,
+	        			quoteId : quoteId,
+	        		},
+	        		success : function(response){
+	        			if(response.includes("Error")){
+	        				//$('#result-custom-quote').text(response)
+	        				alert(response)
+	        			}
+	        			else{
+	        				
+	        				//$('#result-custom-quote').text("Quote has been created successfully")
+	        				alert("Post has been created successfully")
+	        				fetchAllPosts();
+	        				clearFields();
+	        				
+	        			}
+	        		},
+	        		fail : function(){
+	        			
+	        			alert("Something went terribly wrong!!!")
+	        		}
+	        	})
+			}
+			else{
+				alert("Please fill all fields");
+			}
+			
+		}
+
+$('#update-post').on('click',function(){
+	updatePost();
+})
+$('#submit-post').on('click',function(){
+	var quoteId = $("#select-quote option:selected").val();
+	var comment = $("#input-comment").val();
+	if(comment!=""&&quoteId>0){
+		addPost(quoteId, comment)
+	}
+	else{
+		alert("Please fill all fields")
+	}
+})
+function clearFields(){
+	$('#select-quote').show();
+	$('#select-quote-label').show();
+	$("#input-comment").val('');
+	$('#select-quote option:selected').removeAttr('selected');
+	$('#select-quote').removeAttr("disabled");
+	$('#post-container').empty();
+	$('#update-post').attr("disabled",true);
+	$('#submit-post').removeAttr("disabled")
+	$('#select-quote option[value="0"]').prop("selected", true);
+	
+	
+}
+function deletePostById(id, template){
+	 $.ajax({
+       	url: "/post/deletebyId",
+       	method: "DELETE",
+       	data: {id : id},
+       	complete: function(data){
+       		if(data.status==200){
+       			alert("Delete Successful")
+       			template.remove();
+       		}
+       		if(data.status==401){
+       			alert("Delete Failed!!! You cant delete other people's quotes")
+       		}
+       		if(data.status==404){
+       			alert("Delete Failed!!! No such comment exists")
+       		}
+       		}
+       	})
+}
+
+  
+
+	
+
+function getCurrentUser(){
+   	 $.ajax({
+        	url: "/user/current",
+        	method: "GET",
+        	success: function(data){
+        		if(data!=null){
+        			visualiseCurrentUser(data);
+        		}
+        		}
+        	})
+    	
+    }
+    
+    function visualiseCurrentUser(user){
+    	$('#current-user-username').text(user.username)
+    	$('#current-user').val(user.id)
+    }
+ 
+    
+    function updatePost(){
+    	var comment = $("#input-comment").val();
+    	if(comment.length>0){
+		$.ajax({
+    		url: "/post/update",
+    		method: "POST",
+    		data : {
+    			postId :  $('#post-id').val(),
+    			comment : $('#input-comment').val(),
+    		},
+    		success : function(response){
+    			if(response.includes("Error")){
+    				//$('#result-custom-quote').text(response)
+    				alert(response)
+    			}
+    			else{
+            		//$('#update-custom-quote').attr("id","submit-custom-quote")
+            		//$('#submit-custom-quote').html("Add Quote")
+            		//$('#create-update-quote').text("Create Quote:");
+            		$('#input-comment').val('');
+            		updatePressed = false;
+            		clearFields();
+            		
+    				//$('#result-custom-quote').text("Quote has been created successfully")
+    				alert("Quote has been updated successfully");
+    				fetchAllPosts();
+    			}
+    		},
+    		fail : function(){
+    			
+    			alert("Something went terribly wrong!!!")
+    		}
+    	})
+	}
+       
+        
+     else{
+         alert("You havent made any changes!");
+        }
+    }
+    
+    $('input[name="filter"]').click(function(){
+    	clearFields();
+    	fetchAllPosts();		
+    })
+	
+    })
+
+
+    
+</script>
+</html>

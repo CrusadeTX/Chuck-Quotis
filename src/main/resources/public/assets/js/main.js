@@ -67,6 +67,7 @@ function changeView(){
     if(quotes.length>0){
         
         images = $("#quote-container").find("img");
+        button = $("#quote-container").find("button");
         if(quotes.hasClass("card")){
             quotes.removeClass("card");
             quotes.removeClass("m-2");
@@ -77,6 +78,11 @@ function changeView(){
             quotes.addClass("w-100");
             images.addClass("thumbnail");
             images.removeClass("img-full-size");
+            button.removeClass("mb-3");
+            button.addClass("mt-3");
+            button.removeClass("d-inline-block");
+            button.addClass("d-block");
+            button.addClass("w-100");
         }
         else{
             quotes.addClass("card");
@@ -88,6 +94,11 @@ function changeView(){
             quotes.removeClass("w-100");
             images.removeClass("thumbnail");
             images.addClass("img-full-size");
+            button.removeClass("mt-3");
+            button.addClass("mb-3");
+            button.addClass("d-inline-block");
+            button.removeClass("d-block");
+            button.removeClass("w-100");
         }
     }
 }
@@ -230,6 +241,4 @@ function QueryBuilder(type){
 
 
 }
-
-
 })
